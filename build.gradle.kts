@@ -22,10 +22,22 @@ repositories {
         }
     }
 
+    maven("https://maven.pkg.github.com/milkyway0308/PlaceHolders") {
+        credentials {
+            username = properties["gpr.user"] as String
+            password = properties["gpr.key"] as String
+        }
+    }
+
 }
 
 dependencies {
-    implementation("skywolf46:commandannotation:2.0.6")
+    implementation("skywolf46:commandannotation:latest.release") {
+        isChanging = true
+    }
+    implementation("skywolf46:placeholders:latest.release") {
+        isChanging = true
+    }
     compileOnly(files("V:/API/Java/Minecraft/Bukkit/Spigot/Spigot 1.12.2.jar"))
 }
 
@@ -35,7 +47,7 @@ publishing {
     repositories {
         maven {
             name = "Github"
-            url = uri("https://github.com/FUNetwork/SkywolfExtraUtility")
+            url = uri("https://maven.pkg.github.com/FUNetwork/SkywolfExtraUtility")
             credentials {
                 username = properties["gpr.user"] as String
                 password = properties["gpr.key"] as String

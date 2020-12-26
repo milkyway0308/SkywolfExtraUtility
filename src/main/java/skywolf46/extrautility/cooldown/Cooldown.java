@@ -23,4 +23,8 @@ public class Cooldown {
     public Cooldown applyCooldownSecond(double second) {
         return applyCooldown(second);
     }
+
+    public boolean hasCooldown(){
+        return expire >= System.currentTimeMillis();
+    }
 }
