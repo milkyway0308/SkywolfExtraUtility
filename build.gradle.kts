@@ -13,6 +13,14 @@ buildscript {
 group = "skywolf46"
 version = properties["version"] as String
 
+tasks {
+    processResources {
+        filesMatching("plugin.yml") {
+            expand("version" to project.properties["version"])
+        }
+    }
+}
+
 repositories {
     mavenCentral()
     maven("https://maven.pkg.github.com/milkyway0308/CommandAnnotation") {
