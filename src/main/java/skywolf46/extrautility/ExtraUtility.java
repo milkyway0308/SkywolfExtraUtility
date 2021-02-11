@@ -3,14 +3,17 @@ package skywolf46.extrautility;
 import skywolf46.extrautility.abstraction.AbstractStorage;
 import skywolf46.extrautility.cooldown.Cooldown;
 import skywolf46.extrautility.cooldown.CooldownStorage;
+import skywolf46.extrautility.counter.PlayerCounterStorage;
 
 import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ExtraUtility {
-    private static HashMap<Class, AbstractStorage> factory = new HashMap<>();
+    private static HashMap<Class<?>, AbstractStorage<?, ?, ?>> factory = new HashMap<>();
 
     static {
         registerStorage(Cooldown.class, new CooldownStorage());
+        registerStorage(AtomicInteger.class, new PlayerCounterStorage());
     }
 
 
@@ -18,7 +21,7 @@ public class ExtraUtility {
         factory.put(from, ks);
     }
 
-    public static <T extends AbstractStorage> T generateStorage(Class target) {
+    public static <T extends AbstractStorage<?, ?, ?>> T generateStorage(Class<?> target) {
         return factory.containsKey(target) ? (T) factory.get(target).createNew() : null;
     }
 }
