@@ -23,6 +23,7 @@ tasks {
 
 repositories {
     mavenCentral()
+
     maven("https://maven.pkg.github.com/milkyway0308/CommandAnnotation") {
         credentials {
             username = properties["gpr.user"] as String
@@ -40,6 +41,9 @@ repositories {
 }
 
 dependencies {
+
+    compileOnly("org.projectlombok:lombok:1.18.16")
+    annotationProcessor("org.projectlombok:lombok:1.18.16")
     implementation("skywolf46:commandannotation:latest.release") {
         isChanging = true
     }
