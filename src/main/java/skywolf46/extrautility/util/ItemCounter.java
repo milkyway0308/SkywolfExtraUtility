@@ -5,8 +5,12 @@ import org.bukkit.inventory.ItemStack;
 public class ItemCounter {
     private ItemStack item;
 
-    public ItemStack getItem() {
+    public ItemStack getItem(ItemStack item) {
         return item;
+    }
+
+    public int getAmount() {
+        return item.getAmount();
     }
 
     public void setAmount(int am) {
