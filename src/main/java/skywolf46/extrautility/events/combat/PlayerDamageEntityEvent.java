@@ -1,4 +1,4 @@
-package skywolf46.extrautility.events;
+package skywolf46.extrautility.events.combat;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,10 +8,10 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-public class PlayerDamagedByEntityEvent extends PlayerEvent implements Cancellable {
+public class PlayerDamageEntityEvent extends PlayerEvent implements Cancellable {
     private static HandlerList handlerList = new HandlerList();
     @Getter
-    private Entity damager;
+    private Entity victim;
     @Getter
     @Setter
     private double damage;
@@ -19,9 +19,9 @@ public class PlayerDamagedByEntityEvent extends PlayerEvent implements Cancellab
     @Setter
     private boolean cancelled;
 
-    public PlayerDamagedByEntityEvent(Player who, Entity damager, double dmg, boolean isCancelled) {
+    public PlayerDamageEntityEvent(Player who, Entity victim, double dmg, boolean isCancelled) {
         super(who);
-        this.damager = damager;
+        this.victim = victim;
         this.damage = dmg;
         this.cancelled = isCancelled;
     }

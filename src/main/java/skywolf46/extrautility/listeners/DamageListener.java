@@ -5,8 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import skywolf46.extrautility.events.PlayerDamageEntityEvent;
-import skywolf46.extrautility.events.PlayerDamagedByEntityEvent;
+import skywolf46.extrautility.events.combat.PlayerDamageEntityEvent;
+import skywolf46.extrautility.events.combat.PlayerDamagedByEntityEvent;
 
 public class DamageListener implements Listener {
     @EventHandler
