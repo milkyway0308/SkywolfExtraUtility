@@ -16,6 +16,7 @@ public class DamageListener implements Listener {
             Bukkit.getPluginManager().callEvent(pdbee);
             e.setCancelled(pdbee.isCancelled());
             e.setDamage(pdbee.getDamage());
+//            System.out.println("Player Damaged Event!");
         }
 
         if (e.getDamager() instanceof Player) {
@@ -23,6 +24,7 @@ public class DamageListener implements Listener {
             Bukkit.getPluginManager().callEvent(pdee);
             e.setCancelled(pdee.isCancelled());
             e.setDamage(pdee.getDamage());
+//            System.out.println("Player Damage Event!" + pdee.isCancelled());
         }
     }
 }

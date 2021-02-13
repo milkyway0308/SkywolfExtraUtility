@@ -1,6 +1,7 @@
 package skywolf46.extrautility.util;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.bukkit.Material;
 
@@ -21,10 +22,13 @@ public class MaterialUtil {
     }
 
     @AllArgsConstructor
+    @EqualsAndHashCode
     public static final class ItemTypeData {
         @Getter
+        @EqualsAndHashCode.Include
         private Material type;
         @Getter
+        @EqualsAndHashCode.Include
         private short durability = 0;
 
     }
