@@ -3,6 +3,8 @@ package skywolf46.extrautility.collections.maps;
 import lombok.Getter;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -85,6 +87,18 @@ public class ListMap<K, V> implements Map<K, V> {
         list = list.stream().distinct().collect(Collectors.toList());
         if (requireSort)
             list.sort(null);
+    }
+
+    @Override
+    public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+        AtomicBoolean changed = new AtomicBoolean(false);
+        V xz = map.computeIfAbsent(key, x -> {
+            changed.set(true);
+            return mappingFunction.apply(x);
+        });
+        if(requireSort && changed.get())
+            list.sort(null);
+        return xz;
     }
 
     @Override
