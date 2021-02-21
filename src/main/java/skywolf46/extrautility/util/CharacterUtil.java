@@ -1,9 +1,10 @@
 package skywolf46.extrautility.util;
 
+import skywolf46.extrautility.collections.lists.AppendableList;
 import skywolf46.extrautility.collections.lists.CharacterList;
 
 public class CharacterUtil {
-    private static CharacterList WHITESPACE_IGNORE_LIST =
+    private static AppendableList<Character> WHITESPACE_IGNORE_LIST =
             new CharacterList().append(' ');
 
     public static boolean isDigit(String x) {
@@ -169,7 +170,7 @@ public class CharacterUtil {
         return !isEnglish(c) && !isKorean(c);
     }
 
-    public static boolean isSpecialCharacter(char c, CharacterList ignoreList) {
+    public static boolean isSpecialCharacter(char c, AppendableList<Character> ignoreList) {
         if (ignoreList.contains(c))
             return false;
         return isSpecialCharacter(c);

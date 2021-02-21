@@ -1,6 +1,7 @@
 package skywolf46.extrautility.areas;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public class ArrayLocation {
     private double[] xyz = new double[3];
@@ -11,6 +12,10 @@ public class ArrayLocation {
                 x.getY(),
                 x.getZ(),
         };
+    }
+
+    public Location toLocation(World wx) {
+        return new Location(wx, x(), y(), z());
     }
 
     public double x() {

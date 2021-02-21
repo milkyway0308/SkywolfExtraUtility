@@ -5,6 +5,8 @@ import skywolf46.extrautility.collections.maps.DoubleHashMap;
 import skywolf46.extrautility.util.ItemPair;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WolfCollections {
     private static final ModifiableChangingArrayList EMPTY_LIST = new ModifiableChangingArrayList(new Object[0]);
@@ -14,6 +16,8 @@ public class WolfCollections {
     }
 
     public static <T> ModifiableChangingArrayList<T> listUnmodifiable(T... obj) {
+        HashMap<String, Object> map = new HashMap<>();
+
         return new ModifiableChangingArrayList<>(obj);
     }
 

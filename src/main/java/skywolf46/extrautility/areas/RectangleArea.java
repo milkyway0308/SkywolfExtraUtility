@@ -52,4 +52,17 @@ public class RectangleArea implements IArea {
     public IArea create(Location[] locs) {
         return new RectangleArea(locs[0].getWorld(), new ArrayLocation(locs[0]), new ArrayLocation(locs[1]));
     }
+
+    @Override
+    public World getWorld() {
+        return baseWorld;
+    }
+
+    @Override
+    public Location[] getPoints() {
+        return new Location[]{
+                getMin().toLocation(getWorld()),
+                getMax().toLocation(getWorld())
+        };
+    }
 }

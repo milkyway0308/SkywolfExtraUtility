@@ -4,6 +4,7 @@ import skywolf46.extrautility.abstraction.AbstractStorage;
 import skywolf46.extrautility.cooldown.Cooldown;
 import skywolf46.extrautility.cooldown.CooldownStorage;
 import skywolf46.extrautility.counter.PlayerCounterStorage;
+import skywolf46.extrautility.structural.Locate;
 
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,4 +25,6 @@ public class ExtraUtility {
     public static <T extends AbstractStorage<?, ?, ?>> T generateStorage(Class<?> target) {
         return factory.containsKey(target) ? (T) factory.get(target).createNew() : null;
     }
+
+
 }

@@ -1,6 +1,7 @@
 package skywolf46.extrautility.areas;
 
 import org.bukkit.Location;
+import org.bukkit.World;
 
 public interface IArea {
     int getPoint();
@@ -8,4 +9,8 @@ public interface IArea {
     boolean isInArea(Location loc);
 
     IArea create(Location[] locs);
+
+    World getWorld();
+
+    Location[] getPoints();
 }

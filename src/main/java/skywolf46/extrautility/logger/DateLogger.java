@@ -59,7 +59,7 @@ public class DateLogger extends Thread {
         textToWrite.clear();
         lock.writeLock().unlock();
         for (String x : appender) {
-            System.out.println("Appended" + x);
+//            System.out.println("Appended" + x);
             writer.append(x);
             writer.newLine();
         }
