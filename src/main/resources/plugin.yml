@@ -1,5 +1,3 @@
 main: skywolf46.extrautility.ExtraUtilityPlugin
 name: SkywolfExtraUtility
 version: ${version}
-depend:
-  - ManifoldRuntime
