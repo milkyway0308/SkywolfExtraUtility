@@ -6,12 +6,9 @@ import skywolf46.extrautility.listener.DamageListener
 import skywolf46.extrautility.listener.InteractionListener
 import skywolf46.extrautility.util.log
 
-
+internal lateinit var inst: ExtraUtilityPlugin
+    private set
 class ExtraUtilityPlugin : JavaPlugin() {
-    companion object {
-        internal lateinit var inst: ExtraUtilityPlugin
-            private set
-    }
 
     override fun onEnable() {
         inst = this

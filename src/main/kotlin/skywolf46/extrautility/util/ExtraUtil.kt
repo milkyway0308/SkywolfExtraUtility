@@ -1,13 +1,13 @@
 package skywolf46.extrautility.util
 
-inline fun Boolean?.ifTrue(block: Boolean.() -> Unit): Boolean? {
+inline fun Boolean?.ifTrue(block: () -> Unit): Boolean? {
     if (this == true) {
         block()
     }
     return this
 }
 
-inline fun Boolean?.ifFalse(block: Boolean?.() -> Unit): Boolean? {
+inline fun Boolean?.ifFalse(block: () -> Unit): Boolean? {
     if (null == this || !this) {
         block()
     }
@@ -15,14 +15,14 @@ inline fun Boolean?.ifFalse(block: Boolean?.() -> Unit): Boolean? {
 }
 
 
-inline fun Boolean?.ifTrue(block: Boolean.() -> Unit, any: Any): Any {
+inline fun Boolean?.ifTrue(block: () -> Unit, any: Any): Any {
     if (this == true) {
         block()
     }
     return any
 }
 
-inline fun Boolean?.ifFalse(block: Boolean?.() -> Unit, any: Any): Any {
+inline fun Boolean?.ifFalse(block: () -> Unit, any: Any): Any {
     if (null == this || !this) {
         block()
     }
@@ -49,6 +49,13 @@ fun nonNull(vararg any: Any?, funct: () -> Unit): Boolean {
         if (x == null)
             return false
     funct()
+    return true
+}
+
+fun <T: Any> runNonNull(any: T?, funct: T.() -> Unit): Boolean {
+    if (any == null)
+        return false
+    funct(any)
     return true
 }
 

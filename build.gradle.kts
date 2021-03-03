@@ -25,6 +25,12 @@ tasks {
             expand("version" to project.properties["version"])
         }
     }
+    shadowJar {
+        archiveClassifier.set("shaded")
+    }
+    jar {
+        dependsOn(shadowJar)
+    }
 }
 
 repositories {

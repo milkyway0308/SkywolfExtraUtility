@@ -6,6 +6,7 @@ import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import skywolf46.extrautility.ExtraUtilityPlugin
 import skywolf46.extrautility.cooldown.PlayerCooldownStorage
+import skywolf46.extrautility.inst
 
 private val cooldown: PlayerCooldownStorage = PlayerCooldownStorage()
 
@@ -23,9 +24,16 @@ fun playerOf(str: String): Player? {
     return Bukkit.getPlayerExact(str)
 }
 
+fun connectedPlayerOf(str: String): OfflinePlayer? {
+    val pl = findPlayerOf(str)
+    if (!pl.isOnline and !pl.hasPlayedBefore())
+        return null
+    return pl
+}
+
 fun Player.hasValue(str: String): Boolean = hasMetadata(str)
 
-fun Player.setValue(str: String, data: Any) = setMetadata(str, FixedMetadataValue(ExtraUtilityPlugin.inst, data))
+fun Player.setValue(str: String, data: Any) = setMetadata(str, FixedMetadataValue(inst, data))
 
 
 @Suppress("UNCHECKED_CAST")
