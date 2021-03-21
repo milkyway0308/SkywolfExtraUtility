@@ -62,8 +62,8 @@ object TimeParser {
             return this
         }
 
-        fun parser(x: String): Function<String, Int> {
-            return parsers[x]!!
+        fun parser(x: String): Function<String, Int>? {
+            return parsers[x]
         }
 
         fun canAccept(toParse: String): Boolean {

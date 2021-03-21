@@ -1,9 +1,11 @@
 package skywolf46.extrautility.util
 
 import org.bukkit.Material
+import org.bukkit.enchantments.Enchantment
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.meta.ItemMeta
 import kotlin.math.max
 
 
@@ -56,18 +58,46 @@ fun Inventory.takeItem(item: ItemStack?, amount: Int) {
     }
 }
 
-fun Inventory.addItemNaturally(item: ItemStack, amount: Int) {
-    var amount = amount
-    while (amount > 0) {
-        val target: ItemStack = item.clone()
-        if (amount >= item.type.maxStackSize) {
-            target.amount = item.type.maxStackSize
-            addItem(target)
-            amount -= item.type.maxStackSize
-        } else {
-            target.amount = amount
-            addItem(target)
-            amount = 0
+fun ItemStack.itemMeta(block: ItemMeta.() -> Unit): ItemStack {
+    val meta = itemMeta
+    block(meta)
+    itemMeta = meta
+    return this
+}
+
+fun ItemStack.name(str: String): ItemStack {
+    itemMeta {
+        displayName = str
+    }
+    return this
+}
+
+
+fun ItemStack.lore(str: List<String>): ItemStack {
+    itemMeta {
+        lore = str
+    }
+    return this
+}
+
+fun ItemStack.amount(amount: Int): ItemStack {
+    setAmount(amount)
+    return this
+}
+
+
+fun ItemStack.lore(vararg lore: String): ItemStack = lore(listOf(*lore))
+
+fun ItemStack.enchant(map: Map<Enchantment, Int>): ItemStack {
+    itemMeta {
+        map.forEach { (ench, lv) ->
+            enchant(ench, lv)
         }
     }
+    return this
+}
+
+fun ItemMeta.enchant(ench: Enchantment, lv: Int): ItemMeta {
+    addEnchant(ench, lv, true)
+    return this
 }

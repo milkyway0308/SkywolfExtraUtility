@@ -21,6 +21,7 @@ java {
 
 tasks {
     processResources {
+        outputs.upToDateWhen { false }
         filesMatching("plugin.yml") {
             expand("version" to project.properties["version"])
         }

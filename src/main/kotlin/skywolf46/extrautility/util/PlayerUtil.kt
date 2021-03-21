@@ -4,7 +4,6 @@ import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
-import skywolf46.extrautility.ExtraUtilityPlugin
 import skywolf46.extrautility.cooldown.PlayerCooldownStorage
 import skywolf46.extrautility.inst
 
@@ -34,6 +33,8 @@ fun connectedPlayerOf(str: String): OfflinePlayer? {
 fun Player.hasValue(str: String): Boolean = hasMetadata(str)
 
 fun Player.setValue(str: String, data: Any) = setMetadata(str, FixedMetadataValue(inst, data))
+
+fun Player.removeValue(str: String): Boolean = hasMetadata(str).ifTrue { removeMetadata(str, inst) }
 
 
 @Suppress("UNCHECKED_CAST")
