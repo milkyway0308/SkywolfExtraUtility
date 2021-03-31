@@ -37,7 +37,7 @@ class DateLogger @JvmOverloads constructor(target: File, format: String, writing
         textToWrite.clear()
         lock.writeLock().unlock()
         for (x in appender) {
-            println("Appended$x")
+//            println("Appended$x")
             writer!!.append(x)
             writer!!.newLine()
         }

@@ -10,51 +10,43 @@ import skywolf46.extrautility.events.abstraction.AbstractPlayerItemEvent
 import skywolf46.extrautility.events.interaction.PlayerLeftClickAtBlockEvent
 import skywolf46.extrautility.events.interaction.PlayerLeftClickEvent
 import skywolf46.extrautility.events.interaction.PlayerRightClickAtBlockEvent
+import skywolf46.extrautility.events.interaction.PlayerRightClickEvent
+import skywolf46.extrautility.util.callEvent
 
 
 class InteractionListener : Listener {
     @EventHandler
     fun onInteraction(e: PlayerInteractEvent) {
-        var cc: AbstractPlayerItemEvent
+        var cc: AbstractPlayerItemEvent? = null
         when (e.action) {
             Action.LEFT_CLICK_BLOCK -> {
-                Bukkit.getPluginManager()
-                    .callEvent(PlayerLeftClickAtBlockEvent(e.player, e.clickedBlock).setCancel(e.isCancelled).also {
-                        cc = it
-                    })
-                e.isCancelled = cc.isCancelled()
-                Bukkit.getPluginManager().callEvent(PlayerLeftClickEvent(e.player).setCancel(e.isCancelled).also {
+                PlayerLeftClickAtBlockEvent(e, e.player, e.clickedBlock).callEvent()
+                Bukkit.getPluginManager().callEvent(PlayerLeftClickEvent(e, e.player,true).also {
                     cc = it
                 })
-                e.isCancelled = cc.isCancelled()
             }
             Action.LEFT_CLICK_AIR -> {
-                Bukkit.getPluginManager().callEvent(PlayerLeftClickEvent(e.player).setCancel(e.isCancelled).also {
+                Bukkit.getPluginManager().callEvent(PlayerLeftClickEvent(e, e.player,false).also {
                     cc = it
                 })
-                e.isCancelled = cc.isCancelled()
             }
             Action.RIGHT_CLICK_BLOCK -> {
-                Bukkit.getPluginManager().callEvent(
-                    PlayerRightClickAtBlockEvent(
-                        e.player,
-                        e.clickedBlock,
-                        e.hand == EquipmentSlot.OFF_HAND
-                    ).setCancel(e.isCancelled).also {
-                        cc = it
-                    })
-                e.isCancelled = cc.isCancelled()
-                Bukkit.getPluginManager().callEvent(PlayerLeftClickEvent(e.player).setCancel(e.isCancelled).also {
+                PlayerRightClickAtBlockEvent(
+                    e,
+                    e.player,
+                    e.clickedBlock,
+                    e.hand == EquipmentSlot.OFF_HAND
+                ).callEvent()
+                Bukkit.getPluginManager().callEvent(PlayerRightClickEvent(e, e.player, true).also {
                     cc = it
                 })
-                e.isCancelled = cc.isCancelled()
             }
             Action.RIGHT_CLICK_AIR -> {
-                Bukkit.getPluginManager().callEvent(PlayerLeftClickEvent(e.player).setCancel(e.isCancelled).also {
+                Bukkit.getPluginManager().callEvent(PlayerRightClickEvent(e, e.player, false).also {
                     cc = it
                 })
-                e.isCancelled = cc.isCancelled()
             }
         }
+        cc?.callEvent()
     }
 }

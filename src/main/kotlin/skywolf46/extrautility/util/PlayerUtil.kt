@@ -2,6 +2,7 @@ package skywolf46.extrautility.util
 
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
+import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import skywolf46.extrautility.cooldown.PlayerCooldownStorage
@@ -66,3 +67,11 @@ fun Player.stringValue(str: String, default: String): String = getValue(str, def
 fun <K, V> Player.mapValue(str: String): Map<K, V> = getOrSetValue(str) { HashMap() }
 
 fun <K> Player.listValue(str: String): List<K> = getOrSetValue(str) { ArrayList() }
+
+operator fun <T : Any> Player.get(str: String) = getValueOrNull<T>(str)
+
+operator fun <T : Any> Player.set(str: String, data: T) = setValue(str, data)
+
+operator fun Player.minusAssign(str: String) {
+    removeValue(str)
+}
