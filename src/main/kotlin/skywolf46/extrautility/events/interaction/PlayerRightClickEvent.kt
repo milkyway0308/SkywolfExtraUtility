@@ -6,7 +6,7 @@ import org.bukkit.event.player.PlayerInteractEvent
 import skywolf46.extrautility.events.abstraction.AbstractPlayerItemEvent
 
 
-class PlayerRightClickEvent(ev: PlayerInteractEvent, who: Player?, val isBlockInteraction: Boolean) :
+class PlayerRightClickEvent(ev: PlayerInteractEvent, who: Player?, val isBlockInteraction: Boolean, val isOffHanded: Boolean) :
     AbstractPlayerItemEvent(ev, who) {
     companion object {
         val handlerList = HandlerList()

@@ -37,12 +37,12 @@ class InteractionListener : Listener {
                     e.clickedBlock,
                     e.hand == EquipmentSlot.OFF_HAND
                 ).callEvent()
-                Bukkit.getPluginManager().callEvent(PlayerRightClickEvent(e, e.player, true).also {
+                Bukkit.getPluginManager().callEvent(PlayerRightClickEvent(e, e.player, true,e.hand == EquipmentSlot.OFF_HAND).also {
                     cc = it
                 })
             }
             Action.RIGHT_CLICK_AIR -> {
-                Bukkit.getPluginManager().callEvent(PlayerRightClickEvent(e, e.player, false).also {
+                Bukkit.getPluginManager().callEvent(PlayerRightClickEvent(e, e.player, false,e.hand == EquipmentSlot.OFF_HAND).also {
                     cc = it
                 })
             }
