@@ -16,17 +16,25 @@ class PlayerRightClickAtBlockEvent(
 ) :
     AbstractPlayerItemEvent(ev, who) {
 
-    override fun getHandlers(): HandlerList {
-        return handlerList
-    }
-
     override var itemInHand: ItemStack?
         get() = if (isOffHanded) getPlayer().equipment.itemInOffHand else getPlayer().equipment.itemInMainHand
         set(ita) {
             if (isOffHanded) getPlayer().equipment.itemInOffHand = ita else getPlayer().equipment.itemInMainHand = ita
         }
 
+    override fun getHandlers(): HandlerList {
+        return _handle
+    }
+
     companion object {
-        val handlerList = HandlerList()
+
+        internal val _handle = HandlerList()
+
+        @JvmStatic
+        fun getHandlerList(): HandlerList {
+            return _handle
+        }
     }
 }
+
+

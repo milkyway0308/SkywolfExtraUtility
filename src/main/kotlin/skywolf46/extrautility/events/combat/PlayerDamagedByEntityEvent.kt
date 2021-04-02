@@ -27,11 +27,17 @@ class PlayerDamagedByEntityEvent(
     override fun isCancelled(): Boolean = cancelled
 
     override fun getHandlers(): HandlerList {
-        return handlerList
+        return _handle
     }
 
     companion object {
-        val handlerList = HandlerList()
+
+        internal val _handle = HandlerList()
+
+        @JvmStatic
+        fun getHandlerList(): HandlerList {
+            return _handle
+        }
     }
 
 }
