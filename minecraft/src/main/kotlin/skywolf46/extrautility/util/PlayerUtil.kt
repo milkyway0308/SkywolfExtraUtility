@@ -2,7 +2,6 @@ package skywolf46.extrautility.util
 
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
-import org.bukkit.entity.Entity
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import skywolf46.extrautility.cooldown.PlayerCooldownStorage

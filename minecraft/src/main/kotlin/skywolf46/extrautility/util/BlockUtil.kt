@@ -1,8 +1,6 @@
 package skywolf46.extrautility.util
 
 import org.bukkit.block.Block
-import org.bukkit.entity.Entity
-import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import skywolf46.extrautility.inst
 

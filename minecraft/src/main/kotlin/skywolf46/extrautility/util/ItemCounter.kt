@@ -1,12 +1,12 @@
 package skywolf46.extrautility.util
 
-import lombok.AllArgsConstructor
+
 import org.bukkit.inventory.ItemStack
 
 
-@AllArgsConstructor
-class ItemCounter {
-    var item: ItemStack? = null
+
+class ItemCounter(item: ItemStack) {
+    var item: ItemStack? = item
         private set
     var amount: Int
         get() = item!!.amount

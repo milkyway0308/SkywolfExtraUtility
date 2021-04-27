@@ -1,0 +1,41 @@
+plugins {
+    id 'maven-publish'
+    id 'java'
+    id("com.github.johnrengelman.shadow") version "2.0.4"
+}
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation(project(":common"))
+    implementation(project(":minecraft"))
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.32'
+}
+
+jar {
+    baseName "SkywolfExtraUtility"
+    finalizedBy("shadowJar")
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "Reposilite"
+            url(rootProject.properties["snapshot"] as Boolean ? rootProject.properties['reposilite.snapshot'] as String : rootProject.properties['reposilite.release'] as String)
+            credentials {
+                username rootProject.properties['reposilite.user'] as String
+                password rootProject.properties['reposilite.token'] as String
+            }
+        }
+    }
+    publications {
+        create("jar", MavenPublication) {
+            groupId 'skywolf46'
+            artifactId "${rootProject.name.toLowerCase()}-${project.name}"
+            version rootProject.properties['version'] as String
+            from components.java
+        }
+    }
+}
+

@@ -12,11 +12,18 @@ class ExtraUtilityPlugin : JavaPlugin() {
 
     override fun onEnable() {
         inst = this
+
         log("§e[ExtraUtility] §7Initializing " + getVersion())
         Bukkit.getPluginManager().registerEvents(DamageListener(), this)
-        Bukkit.getPluginManager().registerEvents(InteractionListener(), this)
 
+        try {
+            Class.forName("org.bukkit.inventory.EquipmentSlot")
+            Bukkit.getPluginManager().registerEvents(InteractionListener(), this)
+        }catch (e: Exception){
+            log("§e[ExtraUtility] §cUnsupported version! Disabling event support.")
+        }
     }
+
 
     fun getVersion(): String? = description.version
 }

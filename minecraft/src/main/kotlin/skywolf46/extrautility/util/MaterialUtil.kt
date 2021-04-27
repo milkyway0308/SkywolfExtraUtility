@@ -1,9 +1,6 @@
 package skywolf46.extrautility.util
 
 import org.bukkit.Material
-import skywolf46.extrautility.util.MaterialUtil.ItemTypeData
-
-
 
 
 class MaterialUtil {

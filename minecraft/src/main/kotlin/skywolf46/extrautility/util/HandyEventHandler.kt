@@ -9,7 +9,6 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
-import java.util.ArrayList
 import java.util.function.Consumer
 
 
@@ -32,12 +31,37 @@ class HandyEventHandler(private val pl: JavaPlugin) {
         }
     }
 
-    private fun registerHandler(mtd: Method) {
-        val inv = HandyEventInvoker(mtd)
+
+    fun registerHandlerInstance(instance: Any) {
+        for (mtd in instance::class.java.methods) {
+            if (!Modifier.isStatic(mtd.modifiers)) {
+                mtd.isAccessible = true
+                if (mtd.getAnnotation(EventHandler::class.java) != null) {
+                    registerHandler(mtd, instance)
+                }
+            } else {
+                if (mtd.getAnnotation(EventHandler::class.java) != null) {
+                    System.err.println("Caution: EventHandler detected on static method \"" + mtd.name + "\" in instance " + instance::class.java.name)
+                }
+            }
+        }
+    }
+
+    private fun registerHandler(mtd: Method, obj: Any? = null) {
+        val inv = HandyEventInvoker(mtd, obj)
         if (inv.baseEvent == null) return
         handyEvent.computeIfAbsent(
             inv.baseEvent
-        ) { a: Class<out Event>? -> HandyEventListener() }.register(inv)
+        ) { HandyEventListener() }.register(inv)
+    }
+
+
+    private fun registerHandler(instance: Any, mtd: Method) {
+        val inv = HandyEventInvoker(mtd, instance)
+        if (inv.baseEvent == null) return
+        handyEvent.computeIfAbsent(
+            inv.baseEvent
+        ) { HandyEventListener() }.register(inv)
     }
 
     private inner class HandyEventListener : Listener {
@@ -46,7 +70,8 @@ class HandyEventHandler(private val pl: JavaPlugin) {
         fun register(invoker: HandyEventInvoker) {
             if (!registered.contains(invoker.priority)) {
                 registered.add(invoker.priority)
-                Bukkit.getPluginManager().registerEvent(invoker.baseEvent, this, invoker.priority,
+                Bukkit.getPluginManager().registerEvent(
+                    invoker.baseEvent, this, invoker.priority,
                     { listener, event -> listenEvent(invoker.priority, event) }, pl
                 )
             }
@@ -61,7 +86,7 @@ class HandyEventHandler(private val pl: JavaPlugin) {
         }
     }
 
-    private class HandyEventInvoker(mtd: Method) {
+    private class HandyEventInvoker(mtd: Method, val obj: Any? = null) {
         val baseEvent: Class<out Event>?
         private val methodWorker: Method
         val priority: EventPriority
@@ -70,7 +95,7 @@ class HandyEventHandler(private val pl: JavaPlugin) {
             val params = arrayOfNulls<Any>(methodWorker.parameters.size)
             params[0] = ex
             try {
-                methodWorker.invoke(null, *params)
+                methodWorker.invoke(obj, *params)
             } catch (e: IllegalAccessException) {
                 e.printStackTrace()
             } catch (e: InvocationTargetException) {
