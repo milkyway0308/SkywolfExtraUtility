@@ -1,4 +1,9 @@
 rootProject.name = 'SkywolfExtraUtility'
 include 'common'
 include 'minecraft'
+include 'all'
+include 'all'
+include 'runtime'
+include 'minecraftRuntime'
+include 'all'
 

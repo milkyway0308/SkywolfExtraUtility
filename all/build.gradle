@@ -1,51 +1,29 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.32'
     id 'maven-publish'
     id 'java'
     id("com.github.johnrengelman.shadow") version "2.0.4"
-
 }
-
 
 repositories {
     mavenCentral()
-    maven {
-        url = uri(rootProject.properties["reposilite.release"])
-    }
-
-    maven {
-        url = uri(rootProject.properties["reposilite.spigot"])
-    }
-}
-
-jar {
-    destinationDirectory = file("$rootDir/addonJars")
-    dependsOn("shadowJar")
 }
 
 dependencies {
-    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.32'
+    implementation(project(":minecraft"))
 }
 
-test {
-    useJUnitPlatform()
-}
 
 jar {
-    baseName "SkywolfExtraUtility-${project.name.capitalize()}"
+    baseName "SkywolfExtraUtility"
+    destinationDirectory = file("$rootDir/addonJars")
+    finalizedBy("shadowJar")
 }
 
+shadowJar {
+    baseName "SkywolfExtraUtility"
+    destinationDirectory = file("$rootDir/addonJars")
+}
 
-processResources {
-    filesMatching(["loaderDeclaration.properties", "plugin.yml"]*.toString()) {
-        expand(["version": rootProject.properties["version"] as String])
-    }
-}
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
 
 publishing {
     repositories {
@@ -61,7 +39,7 @@ publishing {
     publications {
         create("jar", MavenPublication) {
             groupId 'skywolf46'
-            artifactId "exutil-${project.name}"
+            artifactId "exutil"
             version rootProject.properties['version'] as String
             from components.java
         }
