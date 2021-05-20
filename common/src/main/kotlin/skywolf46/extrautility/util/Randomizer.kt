@@ -12,6 +12,7 @@ class Randomizer<V : Any> {
         maxCount += amount
     }
 
+    fun maxWeight() = maxCount
     fun size() = map.size
 
     fun list() = ArrayList(map.values)

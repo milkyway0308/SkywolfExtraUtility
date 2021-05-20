@@ -61,7 +61,7 @@ publishing {
     publications {
         create("jar", MavenPublication) {
             groupId 'skywolf46'
-            artifactId "exutil-${project.name}"
+            artifactId "exutil-core"
             version rootProject.properties['version'] as String
             from components.java
         }
