@@ -8,7 +8,7 @@ object TimeParser {
     private var parser: ParsingType? = null
 
     @JvmOverloads
-    fun parseToMillisecond(x: String, parser: ParsingType? = this.parser): Long {
+    fun parseToMillisecond(x: String, parser: ParsingType? = TimeParser.parser): Long {
         var total: Long = 0
         var toParse = 0
         var lastParsed = 0
