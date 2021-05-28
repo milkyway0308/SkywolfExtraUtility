@@ -14,6 +14,7 @@ object ExtraUtilityCore {
     private val eventStorage = mutableMapOf<String, EventStorage>()
     private val ignored = mutableListOf<String>()
 
+
     init {
         addIgnored(
             "kotlin",
@@ -31,9 +32,12 @@ object ExtraUtilityCore {
         )
     }
 
+    fun getIgnoredList() = ArrayList(ignored)
+
     fun addIgnored(vararg packageName: String) {
         ignored += packageName
     }
+
 
     fun scanHandlers() {
         MethodUtil.filter(*ClassUtil.scanClass(ignored).toTypedArray())
