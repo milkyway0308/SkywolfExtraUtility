@@ -3,9 +3,9 @@ package skywolf46.extrautility
 import org.bukkit.Bukkit
 import org.bukkit.plugin.java.JavaPlugin
 import skywolf46.extrautility.ExtraUtilityCore
-import skywolf46.extrautilitytest.listener.DamageListener
-import skywolf46.extrautilitytest.listener.InteractionListener
-import skywolf46.extrautilitytest.util.log
+import skywolf46.extrautility.listener.DamageListener
+import skywolf46.extrautility.listener.InteractionListener
+import skywolf46.extrautility.util.log
 
 internal lateinit var inst: SkywolfExtraUtility
     private set

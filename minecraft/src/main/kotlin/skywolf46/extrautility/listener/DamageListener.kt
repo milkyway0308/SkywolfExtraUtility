@@ -6,9 +6,9 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDeathEvent
-import skywolf46.extrautilitytest.test.events.combat.PlayerDamageEntityEvent
-import skywolf46.extrautilitytest.test.events.combat.PlayerDamagedByEntityEvent
-import skywolf46.extrautilitytest.test.events.combat.PlayerKilledEntityEvent
+import skywolf46.extrautility.events.combat.PlayerDamageEntityEvent
+import skywolf46.extrautility.events.combat.PlayerDamagedByEntityEvent
+import skywolf46.extrautility.events.combat.PlayerKilledEntityEvent
 
 
 class DamageListener : Listener {

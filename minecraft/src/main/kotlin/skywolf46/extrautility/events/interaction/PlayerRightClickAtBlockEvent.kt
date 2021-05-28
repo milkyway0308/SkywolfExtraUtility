@@ -1,11 +1,11 @@
-package skywolf46.extrautility.test.events.interaction
+package skywolf46.extrautility.events.interaction
 
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.ItemStack
-import skywolf46.extrautilitytest.test.events.abstraction.AbstractPlayerItemEvent
+import skywolf46.extrautility.events.abstraction.AbstractPlayerItemEvent
 
 
 class PlayerRightClickAtBlockEvent(

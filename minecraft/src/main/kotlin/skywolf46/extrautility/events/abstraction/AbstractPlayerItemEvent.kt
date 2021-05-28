@@ -1,4 +1,4 @@
-package skywolf46.extrautility.test.events.abstraction
+package skywolf46.extrautility.events.abstraction
 
 import org.bukkit.Material
 import org.bukkit.entity.Player

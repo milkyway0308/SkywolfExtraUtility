@@ -2,8 +2,8 @@ package skywolf46.extrautility.util
 
 import org.bukkit.Bukkit
 import org.bukkit.scheduler.BukkitTask
-import skywolf46.extrautilitytest.data.AdvancedSchedulerData
-import skywolf46.extrautilitytest.inst
+import skywolf46.extrautility.data.AdvancedSchedulerData
+import skywolf46.extrautility.inst
 import java.util.concurrent.atomic.AtomicInteger
 
 

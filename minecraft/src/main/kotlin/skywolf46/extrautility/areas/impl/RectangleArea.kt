@@ -2,8 +2,8 @@ package skywolf46.extrautility.areas.impl
 
 import org.bukkit.Location
 import org.bukkit.World
-import skywolf46.extrautilitytest.abstraction.IArea
-import skywolf46.extrautilitytest.areas.ArrayLocation
+import skywolf46.extrautility.abstraction.IArea
+import skywolf46.extrautility.areas.ArrayLocation
 import skywolf46.extrautility.util.inRange
 import java.util.*
 import java.util.stream.Collectors
@@ -27,7 +27,7 @@ class RectangleArea(loc: Array<Location>) : IArea {
     override fun isInArea(x: Location): Boolean {
         return x.x.inRange(locs[0].x(), locs[1].x())
                 && x.y.inRange(locs[0].y(), locs[1].y())
-                && x.z.inRange(locs[0].z(), locs[1].z());
+                && x.z.inRange(locs[0].z(), locs[1].z())
     }
 
     override fun point(): Int = 2

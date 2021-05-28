@@ -6,8 +6,8 @@ import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
 import skywolf46.extrautility.util.ifFalse
 import skywolf46.extrautility.util.ifTrue
-import skywolf46.extrautilitytest.cooldown.PlayerCooldownStorage
-import skywolf46.extrautilitytest.inst
+import skywolf46.extrautility.cooldown.PlayerCooldownStorage
+import skywolf46.extrautility.inst
 
 private val cooldown: PlayerCooldownStorage = PlayerCooldownStorage()
 

@@ -1,4 +1,4 @@
-package skywolf46.extrautility.test.events.combat
+package skywolf46.extrautility.events.combat
 
 
 import org.bukkit.entity.Entity

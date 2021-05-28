@@ -54,7 +54,6 @@ object TimeParser {
     class ParsingType {
         private val parsers = HashMap<String, Function<String, Int>>()
         private var maxLength = 0
-            private set
 
         fun append(type: String, funct: Function<String, Int>): ParsingType {
             parsers[type] = funct

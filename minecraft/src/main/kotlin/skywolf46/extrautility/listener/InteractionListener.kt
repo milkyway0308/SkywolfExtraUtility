@@ -6,12 +6,12 @@ import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
-import skywolf46.extrautilitytest.test.events.abstraction.AbstractPlayerItemEvent
-import skywolf46.extrautilitytest.test.events.interaction.PlayerLeftClickAtBlockEvent
-import skywolf46.extrautilitytest.test.events.interaction.PlayerLeftClickEvent
-import skywolf46.extrautilitytest.test.events.interaction.PlayerRightClickAtBlockEvent
-import skywolf46.extrautilitytest.test.events.interaction.PlayerRightClickEvent
-import skywolf46.extrautilitytest.util.callEvent
+import skywolf46.extrautility.events.abstraction.AbstractPlayerItemEvent
+import skywolf46.extrautility.events.interaction.PlayerLeftClickAtBlockEvent
+import skywolf46.extrautility.events.interaction.PlayerLeftClickEvent
+import skywolf46.extrautility.events.interaction.PlayerRightClickAtBlockEvent
+import skywolf46.extrautility.events.interaction.PlayerRightClickEvent
+import skywolf46.extrautility.util.callEvent
 
 
 class InteractionListener : Listener {

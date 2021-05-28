@@ -1,14 +1,18 @@
-package skywolf46.extrautility.test.events.interaction
+package skywolf46.extrautility.events.interaction
 
-import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.HandlerList
 import org.bukkit.event.player.PlayerInteractEvent
-import skywolf46.extrautilitytest.test.events.abstraction.AbstractPlayerItemEvent
+import skywolf46.extrautility.events.abstraction.AbstractPlayerItemEvent
 
-class PlayerLeftClickAtBlockEvent(ev: PlayerInteractEvent, who: Player?, val targetBlock: Block) :
+
+class PlayerRightClickEvent(
+    ev: PlayerInteractEvent,
+    who: Player?,
+    val isBlockInteraction: Boolean,
+    val isOffHanded: Boolean
+) :
     AbstractPlayerItemEvent(ev, who) {
-
     override fun getHandlers(): HandlerList {
         return _handle
     }

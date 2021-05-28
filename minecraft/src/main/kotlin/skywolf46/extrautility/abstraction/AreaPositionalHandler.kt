@@ -3,7 +3,7 @@ package skywolf46.extrautility.abstraction
 import org.bukkit.Location
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
-import skywolf46.extrautilitytest.areas.impl.RectangleArea
+import skywolf46.extrautility.areas.impl.RectangleArea
 import skywolf46.messagereplacer.MessageReplacer
 import skywolf46.placeholders.util.MessageParameters
 
