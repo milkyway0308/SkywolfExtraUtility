@@ -5,12 +5,10 @@ import skywolf46.extrautility.annotations.handler.ExtraJavaEventHandler
 import skywolf46.extrautility.data.EventStorage
 import skywolf46.extrautility.util.ClassUtil
 import skywolf46.extrautility.util.MethodUtil
-import java.util.logging.Logger
 import kotlin.reflect.KClass
 import kotlin.reflect.jvm.jvmName
 
 object ExtraUtilityCore {
-    val logger = Logger.getLogger("SkywolfExtraUtility")
     private val eventStorage = mutableMapOf<String, EventStorage>()
     private val ignored = mutableListOf<String>()
 
@@ -28,7 +26,23 @@ object ExtraUtilityCore {
             "io.github.classgraph",
             "jdk.",
             "junit.",
-            "nonapi.io"
+            "nonapi.io",
+            "org.bukkit",
+            "org.apache",
+            "com.fasterxml",
+            "com.mysql",
+            "org.json",
+            "org.jetbrains",
+            "org.intellij",
+            "org.fusesource",
+            "org.spigotmc",
+            "org.bukkit",
+            "net.minecraft.server",
+            "gnu.trove",
+            "com.google",
+            "org.yaml",
+            "javax.",
+            "org.sqlite",
         )
     }
 
@@ -43,12 +57,12 @@ object ExtraUtilityCore {
         MethodUtil.filter(*ClassUtil.scanClass(ignored).toTypedArray())
             .filter(false, ExtraEventHandler::class.java, ExtraEventHandler::class.java)
             .filter({
-                logger.warning("Warning: Method ${method.name} in ${method.declaringClass.name} requires instance. Event handling rejected.")
+                System.err.println("Warning: Method ${method.name} in ${method.declaringClass.name} requires instance. Event handling rejected.")
             }, MethodUtil.ReflectionMethodFilter.INSTANCE_NOT_REQUIRED)
             .unlockAll()
             .methods.forEach { methodWrapper ->
                 if (methodWrapper.method.parameters.size != 1) {
-                    logger.severe("Cannot parse method ${methodWrapper.method.name} in class ${methodWrapper.method.declaringClass.name} : ExtraEventHandler requires one parameter")
+                    System.err.println("Cannot parse method ${methodWrapper.method.name} in class ${methodWrapper.method.declaringClass.name} : ExtraEventHandler requires one parameter")
                     return@forEach
                 }
                 var name = ""

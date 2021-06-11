@@ -20,6 +20,10 @@ class ArgumentStorage {
         addArgument(any)
     }
 
+    fun add(cls: Class<*>, args: Any) {
+        arguments.computeIfAbsent(cls) { mutableListOf() }.add(args)
+    }
+
     fun setArgument(key: String, any: Any) {
         argumentFixed[key] = any
     }

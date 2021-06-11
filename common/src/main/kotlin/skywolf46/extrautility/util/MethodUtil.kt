@@ -17,14 +17,13 @@ object MethodUtil {
     private fun findMethods(instance: Any?, cls: Class<*>, methodList: MutableList<MethodWrapper>) {
         try {
             try {
-                if (cls.kotlin.companionObjectInstance != null) {
+               if (cls.kotlin.companionObjectInstance != null) {
                     forceFindMethods(
                         cls.kotlin.companionObjectInstance,
                         cls.kotlin.companionObjectInstance!!.javaClass,
                         methodList
                     )
                 }
-
                 if (cls.kotlin.objectInstance != null) {
                     forceFindMethods(
                         cls.kotlin.objectInstance,
@@ -36,13 +35,13 @@ object MethodUtil {
             } catch (e: UnsupportedOperationException) {
                 // Ignored.
             } catch (e: Exception) {
-                ExtraUtilityCore.logger.severe("Cannot parse ${cls.javaClass.name} with kotlin reflection : ${e.javaClass.name} (${e.message})")
+//                System.err.println("Cannot parse ${cls.javaClass.name} with kotlin reflection : ${e.javaClass.name} (${e.message})")
             }
             for (x in cls.declaredMethods) {
                 methodList += MethodWrapper(x, instance)
             }
         } catch (e: Throwable) {
-            ExtraUtilityCore.logger.severe("Cannot parse ${cls.javaClass.name} : ${e.javaClass.name} (${e.message})")
+//            ExtraUtilityCore.logger.severe("Cannot parse ${cls.javaClass.name} : ${e.javaClass.name} (${e.message})")
         }
     }
 
@@ -116,7 +115,7 @@ object MethodUtil {
                 try {
                     x.method.isAccessible = true
                 } catch (e: Exception) {
-                    ExtraUtilityCore.logger.finer("Failed to unlock method ${x.method.name} : ${e.javaClass.name} (${e.message})")
+//                    ExtraUtilityCore.logger.finer("Failed to unlock method ${x.method.name} : ${e.javaClass.name} (${e.message})")
                 }
             return this
         }

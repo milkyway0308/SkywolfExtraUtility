@@ -8,10 +8,15 @@ import kotlin.reflect.KVisibility
 object ClassUtil {
 
     @JvmStatic
-    inline fun Class<*>.iterateParentClasses(iterator: Class<*>.() -> Unit) {
-        var clsOrig = this
+    fun Class<*>.iterateParentClasses(iterator: Class<*>.() -> Unit) {
+        var clsOrig : Class<*>? = this
         do {
+            if (clsOrig == null)
+                return
             iterator(clsOrig)
+            for (x in clsOrig.interfaces) {
+                x.iterateParentClasses(iterator)
+            }
             clsOrig = clsOrig.superclass
         } while (clsOrig != Any::class.java)
         iterator(Any::class.java)
@@ -19,8 +24,11 @@ object ClassUtil {
 
     @JvmOverloads
     @JvmStatic
-    fun scanClass(ignoredPrefix: List<String> = emptyList()): List<Class<*>> {
-        val scanned = ClassGraph().enableClassInfo().enableAnnotationInfo().scan()
+    fun scanClass(ignoredPrefix: List<String> = emptyList(), vararg additionalLoader: ClassLoader): List<Class<*>> {
+        val scanned = ClassGraph().apply {
+            for (x in additionalLoader)
+                addClassLoader(x)
+        }.enableClassInfo().enableAnnotationInfo().scan()
         val target = mutableListOf<Class<*>>()
         for (x in scanned.allClasses.filter {
             for (prefix in ignoredPrefix)
@@ -29,11 +37,10 @@ object ClassUtil {
             return@filter true
         }) {
             try {
-                ExtraUtilityCore.logger.fine("..Loading class ${x.name}")
-                target += x.loadClass(false)
-                ExtraUtilityCore.logger.finer("....Class ${x.name} loaded")
+                val cls = x.loadClass(false)
+                target += cls
             } catch (e: Exception) {
-                ExtraUtilityCore.logger.severe("....Failed to load class ${x.name} : ${e.javaClass.simpleName} (${e.message})")
+//                ExtraUtilityCore.logger.finer("....Failed to load class ${x.name} : ${e.javaClass.simpleName} (${e.message})")
             }
         }
         return target

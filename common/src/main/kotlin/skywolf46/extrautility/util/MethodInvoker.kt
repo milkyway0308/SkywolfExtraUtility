@@ -8,6 +8,8 @@ class MethodInvoker(val method: Method, private val instance: Any?) {
     private val indexed = mutableListOf<Class<*>?>()
     private val variableIndexed = mutableMapOf<Int, Pair<String, Class<*>>>()
 
+    constructor(invoker: MethodWrapper) : this(invoker.method, invoker.instance)
+
     init {
         for (i in 0 until method.parameterCount) {
             val param = method.parameters[i]
@@ -21,11 +23,11 @@ class MethodInvoker(val method: Method, private val instance: Any?) {
         }
     }
 
-    operator fun invoke(storage: ArgumentStorage) {
+    operator fun invoke(storage: ArgumentStorage) : Any?{
         val arrNullable = Array<Any?>(indexed.size) { null }
         for (x in 0 until indexed.size) {
-            arrNullable[x] = variableIndexed[x]?.run { storage[this.first] } ?: storage[indexed[x]!!]
+            arrNullable[x] = variableIndexed[x]?.run { storage[this.first] } ?: storage[indexed[x]!!]?.get(0)
         }
-        method.invoke(instance, *arrNullable)
+        return method.invoke(instance, *arrNullable)
     }
 }

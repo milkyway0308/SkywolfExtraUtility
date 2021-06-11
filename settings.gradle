@@ -16,4 +16,5 @@ include 'minecraftRuntime'
 include 'all'
 include 'bungee'
 include 'bungeeRuntime'
+include 'fabric'
 
