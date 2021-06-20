@@ -2,17 +2,16 @@ package skywolf46.extrautility.util
 
 import skywolf46.extrautility.annotations.parameter.Named
 import skywolf46.extrautility.data.ArgumentStorage
-import java.lang.reflect.Method
+import java.lang.reflect.Constructor
 
-class MethodInvoker(val method: Method, private val instance: Any?) {
+class ConstructorInvoker(val constructor: Constructor<*>) {
+
     private val indexed = mutableListOf<Class<*>?>()
     private val variableIndexed = mutableMapOf<Int, Pair<String, Class<*>>>()
 
-    constructor(invoker: MethodWrapper) : this(invoker.method, invoker.instance)
-
     init {
-        for (i in 0 until method.parameterCount) {
-            val param = method.parameters[i]
+        for (i in 0 until constructor.parameterCount) {
+            val param = constructor.parameters[i]
             val namedParameter = param.getAnnotation(Named::class.java)
             if (namedParameter != null) {
                 variableIndexed[i] = namedParameter.name to param.type
@@ -28,8 +27,8 @@ class MethodInvoker(val method: Method, private val instance: Any?) {
         for (x in 0 until indexed.size) {
             arrNullable[x] = variableIndexed[x]?.run { storage[this.first] } ?: storage[indexed[x]!!]?.get(0)
         }
-        return method.invoke(instance, *arrNullable)
+        return constructor.newInstance(*arrNullable)
     }
 
-    fun call(storage: ArgumentStorage) : Any? = invoke(storage)
+    fun call(storage: ArgumentStorage): Any? = invoke(storage)
 }
