@@ -25,7 +25,7 @@ class ConstructorInvoker(val constructor: Constructor<*>) {
     operator fun invoke(storage: ArgumentStorage): Any? {
         val arrNullable = Array<Any?>(indexed.size) { null }
         for (x in 0 until indexed.size) {
-            arrNullable[x] = variableIndexed[x]?.run { storage[this.first] } ?: storage[indexed[x]!!]?.get(0)
+            arrNullable[x] = variableIndexed[x]?.run { storage[this.first] } ?: storage[indexed[x]!!].get(0)
         }
         return constructor.newInstance(*arrNullable)
     }

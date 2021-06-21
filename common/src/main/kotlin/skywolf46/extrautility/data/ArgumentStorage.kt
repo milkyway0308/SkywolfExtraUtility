@@ -4,19 +4,61 @@ import skywolf46.extrautility.util.ClassUtil.iterateParentClasses
 import kotlin.reflect.KClass
 
 @Suppress("MemberVisibilityCanBePrivate")
-class ArgumentStorage {
-    private val arguments = mutableMapOf<Class<*>, MutableList<Any>>()
-    private val argumentFixed = mutableMapOf<String, Any>()
+open class ArgumentStorage {
+    protected var arguments = mutableMapOf<Class<*>, MutableList<Any>>()
+    protected var argumentFixed = mutableMapOf<String, Any>()
+    protected var proxies = mutableListOf<ArgumentStorage>()
 
-    operator fun get(str: String) = argumentFixed[str]
-    operator fun get(cls: Class<*>) = arguments[cls]
-    operator fun get(cls: KClass<*>) = arguments[cls.java]
+    open fun shallowCopy(shallowCopyProxy: Boolean): ArgumentStorage {
+        val args = ArgumentStorage()
+        args.arguments = arguments
+        args.argumentFixed = argumentFixed
+        if (shallowCopyProxy)
+            args.proxies = proxies
+        else
+            args.proxies = ArrayList(proxies)
+        return args
+    }
 
-    operator fun set(key: String, any: Any) {
+    open fun deepCopy(): ArgumentStorage {
+        val args = ArgumentStorage()
+        args.arguments = HashMap(arguments)
+        args.argumentFixed = HashMap(argumentFixed)
+        args.proxies = ArrayList(proxies)
+        return args
+    }
+
+    fun addProxy(proxy: ArgumentStorage) {
+        proxies.add(proxy)
+    }
+
+    fun removeProxy(proxy: ArgumentStorage) {
+        proxies.remove(proxy)
+    }
+
+    open operator fun <T : Any> get(str: String): T? = (argumentFixed[str] ?: kotlin.run {
+        for (x in proxies)
+            x.get<T>(str)?.apply {
+                return@run this
+            }
+        return@run null
+    }) as T?
+
+    open operator fun <T : Any> get(cls: Class<T>): List<T> = (arguments[cls] ?: kotlin.run {
+        for (x in proxies)
+            x[cls].apply {
+                return@run this
+            }
+        return@run null
+    }) as List<T>? ?: emptyList()
+
+    open operator fun <T : Any> get(cls: KClass<T>): List<T> = get(cls.java)
+
+    open operator fun set(key: String, any: Any) {
         setArgument(key, any)
     }
 
-    operator fun plusAssign(any: Any) {
+    open operator fun plusAssign(any: Any) {
         addArgument(any)
     }
 
@@ -28,7 +70,7 @@ class ArgumentStorage {
         argumentFixed[key] = any
     }
 
-    fun addArgument(any: Any) {
+    open fun addArgument(any: Any) {
         any.javaClass.iterateParentClasses {
             arguments.computeIfAbsent(this) { mutableListOf() }.add(any)
         }
