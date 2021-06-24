@@ -16,6 +16,12 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
 }
 
+processResources {
+    filesMatching(["loaderDeclaration.properties", "plugin.yml"]*.toString()) {
+        expand(["version": rootProject.properties["version"] as String])
+    }
+    outputs.upToDateWhen { false }
+}
 
 jar {
     baseName "SkywolfExtraUtility-BukkitRuntime"

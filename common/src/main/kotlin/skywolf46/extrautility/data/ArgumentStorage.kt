@@ -36,21 +36,25 @@ open class ArgumentStorage {
         proxies.remove(proxy)
     }
 
-    open operator fun <T : Any> get(str: String): T? = (argumentFixed[str] ?: kotlin.run {
-        for (x in proxies)
-            x.get<T>(str)?.apply {
-                return@run this
+    open operator fun <T : Any> get(str: String): T? {
+        for (x in proxies.size - 1..0) {
+            proxies[x].get<T>(str)?.run {
+                return this
             }
-        return@run null
-    }) as T?
+        }
+        return argumentFixed[str] as T?
+    }
 
-    open operator fun <T : Any> get(cls: Class<T>): List<T> = (arguments[cls] ?: kotlin.run {
-        for (x in proxies)
-            x[cls].apply {
-                return@run this
-            }
-        return@run null
-    }) as List<T>? ?: emptyList()
+    open operator fun <T : Any> get(cls: Class<T>): List<T> {
+        val next = mutableListOf<Any>()
+        for (x in proxies.size - 1..0) {
+            next.addAll(proxies[x].get(cls))
+        }
+        arguments[cls]?.apply {
+            next.addAll(this)
+        }
+        return next as List<T>
+    }
 
     open operator fun <T : Any> get(cls: KClass<T>): List<T> = get(cls.java)
 

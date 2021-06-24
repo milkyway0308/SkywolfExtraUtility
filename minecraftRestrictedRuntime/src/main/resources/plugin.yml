@@ -1,0 +1,4 @@
+name: SkywolfExtraUtility
+version: ${version}
+main: skywolf46.extrautility.SkywolfExtraUtility
+utility-mode: restricted

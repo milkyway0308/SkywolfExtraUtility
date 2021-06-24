@@ -1,44 +1,32 @@
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.4.32'
     id 'maven-publish'
     id 'java'
+    id("com.github.johnrengelman.shadow") version "2.0.4"
 }
-
 
 repositories {
     mavenCentral()
-    maven {
-        url = uri(rootProject.properties["reposilite.release"])
-    }
-
-    maven {
-        url = uri(rootProject.properties["reposilite.spigot"])
-    }
-}
-
-repositories {
-    maven {
-        url = uri(rootProject.properties["reposilite.spigot"])
-    }
 }
 
 dependencies {
-    compileOnly "io.github.classgraph:classgraph:4.8.+"
-    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.32'
-    compileOnly group: 'org.spigotmc', name: 'spigot', version: '1.12.2'
-    compileOnly group: 'skywolf46', name: 'placeholders', version: 'latest.release'
-    implementation(project(":common"))
+    implementation(project(":minecraft"))
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.32'
+    implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.5.0'
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
 }
 
-test {
-    useJUnitPlatform()
-}
 
 jar {
-    baseName "SkywolfExtraUtility-${project.name.capitalize()}"
+    baseName "SkywolfExtraUtility-BukkitRestrictedRuntime"
     destinationDirectory = file("$rootDir/addonJars")
+    finalizedBy("shadowJar")
 }
 
+shadowJar {
+    baseName "SkywolfExtraUtility-BukkitRestrictedRuntime"
+    destinationDirectory = file("$rootDir/addonJars")
+}
 
 processResources {
     filesMatching(["loaderDeclaration.properties", "plugin.yml"]*.toString()) {
@@ -46,11 +34,7 @@ processResources {
     }
     outputs.upToDateWhen { false }
 }
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
+
 
 publishing {
     repositories {
@@ -66,7 +50,7 @@ publishing {
     publications {
         create("jar", MavenPublication) {
             groupId 'skywolf46'
-            artifactId "exutil-${project.name}"
+            artifactId "exutil-mcrt-restricted"
             version rootProject.properties['version'] as String
             from components.java
         }
