@@ -9,8 +9,9 @@ open class ArgumentStorage {
     protected var argumentFixed = mutableMapOf<String, Any>()
     protected var proxies = mutableListOf<ArgumentStorage>()
 
+
     open fun shallowCopy(shallowCopyProxy: Boolean): ArgumentStorage {
-        val args = ArgumentStorage()
+        val args = newInstance()
         args.arguments = arguments
         args.argumentFixed = argumentFixed
         if (shallowCopyProxy)
@@ -21,12 +22,14 @@ open class ArgumentStorage {
     }
 
     open fun deepCopy(): ArgumentStorage {
-        val args = ArgumentStorage()
+        val args = newInstance()
         args.arguments = HashMap(arguments)
         args.argumentFixed = HashMap(argumentFixed)
         args.proxies = ArrayList(proxies)
         return args
     }
+
+    open fun newInstance() = ArgumentStorage()
 
     fun addProxy(proxy: ArgumentStorage) {
         proxies.add(proxy)
@@ -47,8 +50,8 @@ open class ArgumentStorage {
 
     open operator fun <T : Any> get(cls: Class<T>): List<T> {
         val next = mutableListOf<Any>()
-        for (x in proxies.size - 1..0) {
-            next.addAll(proxies[x].get(cls))
+        for (x in proxies.size downTo 1) {
+            next.addAll(proxies[x - 1].get(cls))
         }
         arguments[cls]?.apply {
             next.addAll(this)
@@ -75,8 +78,14 @@ open class ArgumentStorage {
     }
 
     open fun addArgument(any: Any) {
+        val proceed = mutableListOf<Class<*>>()
         any.javaClass.iterateParentClasses {
-            arguments.computeIfAbsent(this) { mutableListOf() }.add(any)
+            if (this in proceed)
+                return@iterateParentClasses
+            proceed += this
+            arguments.computeIfAbsent(this) { mutableListOf() }.apply {
+                add(any)
+            }
         }
     }
 
