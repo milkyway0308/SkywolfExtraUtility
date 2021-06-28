@@ -13,4 +13,6 @@ interface IArea {
     fun world(): World
 
     fun locations(): Array<Location>
+
+    fun snapshot() : IAreaSnapshot
 }

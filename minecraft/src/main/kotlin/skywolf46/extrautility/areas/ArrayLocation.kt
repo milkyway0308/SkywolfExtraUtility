@@ -3,35 +3,49 @@ package skywolf46.extrautility.areas
 import org.bukkit.Location
 import org.bukkit.World
 
-class ArrayLocation(x: Location) {
-    val xyz: Array<Double> = arrayOf(x.x, x.y, x.z)
+class ArrayLocation(val xyz: Array<Double>) : Cloneable {
+    constructor(x: Location) : this(arrayOf(x.x, x.y, x.z))
 
     fun location(wx: World) = Location(wx, xyz[0], xyz[1], xyz[2])
 
-    fun x() = xyz[0]
+    var x
+        get() = xyz[0]
+        set(value) {
+            xyz[0] = value
+        }
 
-    fun y() = xyz[1]
+    var y
+        get() = xyz[1]
+        set(value) {
+            xyz[1] = value
+        }
 
-    fun z() = xyz[2]
+    var z
+        get() = xyz[2]
+        set(value) {
+            xyz[2] = value
+        }
 
-    fun x(arx: ArrayLocation) {
-        val cache = x()
-        xyz[0] = arx.x()
-        arx.xyz[0] = cache
+    fun swapX(arx: ArrayLocation) {
+        val cache = x
+        x = arx.x
+        arx.x = cache
+    }
+
+    fun swapY(arx: ArrayLocation) {
+        val cache = y
+        y = arx.y
+        arx.y = cache
     }
 
 
-    fun y(arx: ArrayLocation) {
-        val cache = y()
-        xyz[1] = arx.y()
-        arx.xyz[1] = cache
+    fun swapZ(arx: ArrayLocation) {
+        val cache = z
+        z = arx.z
+        arx.z = cache
     }
 
-
-    fun z(arx: ArrayLocation) {
-        val cache = z()
-        xyz[2] = arx.z()
-        arx.xyz[2] = cache
+    public override fun clone(): ArrayLocation {
+        return ArrayLocation(xyz)
     }
-
 }
