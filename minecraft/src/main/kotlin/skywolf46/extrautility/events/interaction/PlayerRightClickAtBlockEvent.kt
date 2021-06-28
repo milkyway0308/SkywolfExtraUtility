@@ -12,7 +12,7 @@ class PlayerRightClickAtBlockEvent(
     ev: PlayerInteractEvent,
     who: Player?,
     val targetBlock: Block,
-    private val isOffHanded: Boolean
+    @Suppress("MemberVisibilityCanBePrivate") val isOffHanded: Boolean
 ) :
     AbstractPlayerItemEvent(ev, who) {
 
