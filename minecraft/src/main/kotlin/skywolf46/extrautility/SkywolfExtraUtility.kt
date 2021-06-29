@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import skywolf46.extrautility.ExtraUtilityCore
+import skywolf46.extrautility.areas.impl.RectangleArea
 import skywolf46.extrautility.listener.DamageListener
 import skywolf46.extrautility.listener.InteractionListener
 import skywolf46.extrautility.util.MinecraftLoader

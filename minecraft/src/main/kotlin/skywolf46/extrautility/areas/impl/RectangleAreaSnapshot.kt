@@ -2,6 +2,7 @@ package skywolf46.extrautility.areas.impl
 
 import org.bukkit.Material
 import org.bukkit.block.Block
+import skywolf46.extrautility.abstraction.IArea
 import skywolf46.extrautility.abstraction.IAreaSnapshot
 import skywolf46.extrautility.data.RelativeLocationPointer
 import skywolf46.extrautility.data.SnapshotBlock
@@ -75,5 +76,9 @@ class RectangleAreaSnapshot(val area: RectangleArea) : IAreaSnapshot {
 
     override fun determineChunks(): WrappedChunks<RelativeLocationPointer> {
         TODO("Not yet implemented")
+    }
+
+    override fun getOriginalArea(): IArea? {
+        return area
     }
 }

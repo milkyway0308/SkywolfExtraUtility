@@ -34,4 +34,5 @@ interface IAreaSnapshot : Cloneable {
 
     fun determineChunks(): WrappedChunks<RelativeLocationPointer>
 
+    fun getOriginalArea() : IArea?
 }

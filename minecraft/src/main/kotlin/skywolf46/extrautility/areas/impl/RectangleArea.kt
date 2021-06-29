@@ -1,5 +1,6 @@
 package skywolf46.extrautility.areas.impl
 
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.util.Vector
@@ -13,7 +14,7 @@ import java.util.stream.Collectors
 
 class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
     companion object {
-        val instance: RectangleArea = RectangleArea(arrayOf())
+        val instance: RectangleArea = RectangleArea(arrayOf(Location(Bukkit.getWorlds()[0], 0.0, 0.0,0.0),Location(Bukkit.getWorlds()[0], 0.0, 0.0,0.0)))
     }
 
     constructor(loc: Array<Location>) : this(loc[0].world, Arrays.stream(loc).map { x -> ArrayLocation(x) }
@@ -21,6 +22,7 @@ class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
 
 
     init {
+        println("Test")
         if (locs[0].x > locs[1].x) locs[0].swapX(locs[1])
         if (locs[0].y > locs[1].y) locs[0].swapY(locs[1])
         if (locs[0].z > locs[1].z) locs[0].swapZ(locs[1])
