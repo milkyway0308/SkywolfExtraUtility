@@ -3,12 +3,15 @@ package skywolf46.extrautility.listener
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import skywolf46.extrautility.events.combat.PlayerDamageEntityEvent
 import skywolf46.extrautility.events.combat.PlayerDamagedByEntityEvent
 import skywolf46.extrautility.events.combat.PlayerKilledEntityEvent
+import skywolf46.extrautility.events.combat.PlayerPreDeathEvent
+import skywolf46.extrautility.util.callEvent
 
 
 class DamageListener : Listener {
@@ -34,5 +37,15 @@ class DamageListener : Listener {
     fun ev(e: EntityDeathEvent) {
         if (e.entity.killer != null) Bukkit.getPluginManager()
             .callEvent(PlayerKilledEntityEvent(e.entity.killer, e.entity))
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    fun EntityDamageByEntityEvent.onPreDeathConditionEvent() {
+        if (entity is Player && (entity as Player).health <= finalDamage) {
+            PlayerPreDeathEvent(entity as Player).callEvent().let {
+                if (it.isCancelled)
+                    it.isCancelled = isCancelled
+            }
+        }
     }
 }

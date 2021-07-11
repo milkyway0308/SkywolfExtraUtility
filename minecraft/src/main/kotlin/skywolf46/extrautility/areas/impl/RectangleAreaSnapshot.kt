@@ -18,7 +18,6 @@ class RectangleAreaSnapshot(val area: RectangleArea) : IAreaSnapshot {
     constructor(area: RectangleArea, doScan: Boolean = true, scanningCheck: (Block) -> Unit = {}) : this(area) {
         // Scan area
         if (doScan) {
-
             area.parseBlocks {
                 getBlockAt(it.blockX, it.blockY, it.blockZ).apply {
                     setType(RelativeLocationPointer(it), type to data)
@@ -75,10 +74,16 @@ class RectangleAreaSnapshot(val area: RectangleArea) : IAreaSnapshot {
     }
 
     override fun determineChunks(): WrappedChunks<RelativeLocationPointer> {
-        TODO("Not yet implemented")
+        val lst = WrappedChunks<RelativeLocationPointer>()
+        for (x in area.locs[0].x.toInt().shr(4)..area.locs[1].x.toInt().shr(4)) {
+            for (z in area.locs[0].z.toInt().shr(4)..area.locs[1].z.toInt().shr(4)) {
+                lst[x to z] = RelativeLocationPointer(x, 0, z)
+            }
+        }
+        return lst
     }
 
-    override fun getOriginalArea(): IArea? {
+    override fun getOriginalArea(): IArea {
         return area
     }
 }

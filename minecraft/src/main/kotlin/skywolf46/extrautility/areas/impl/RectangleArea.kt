@@ -14,7 +14,12 @@ import java.util.stream.Collectors
 
 class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
     companion object {
-        val instance: RectangleArea = RectangleArea(arrayOf(Location(Bukkit.getWorlds()[0], 0.0, 0.0,0.0),Location(Bukkit.getWorlds()[0], 0.0, 0.0,0.0)))
+        val instance: RectangleArea = RectangleArea(
+            arrayOf(
+                Location(Bukkit.getWorlds()[0], 0.0, 0.0, 0.0),
+                Location(Bukkit.getWorlds()[0], 0.0, 0.0, 0.0)
+            )
+        )
     }
 
     constructor(loc: Array<Location>) : this(loc[0].world, Arrays.stream(loc).map { x -> ArrayLocation(x) }
@@ -22,7 +27,6 @@ class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
 
 
     init {
-        println("Test")
         if (locs[0].x > locs[1].x) locs[0].swapX(locs[1])
         if (locs[0].y > locs[1].y) locs[0].swapY(locs[1])
         if (locs[0].z > locs[1].z) locs[0].swapZ(locs[1])
@@ -56,7 +60,7 @@ class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
         Direction.Z -> locs[1].z - locs[0].z
     }
 
-    fun parseBlocks(unit: World.(Vector) -> Unit) {
+    override fun parseBlocks(unit: World.(Vector) -> Unit) {
         for (y in locs[0].y.toInt()..locs[1].y.toInt()) {
             for (x in locs[0].x.toInt()..locs[1].x.toInt()) {
                 for (z in locs[0].z.toInt()..locs[1].z.toInt()) {
@@ -69,15 +73,20 @@ class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
     fun slice(direction: Direction, amount: Int): RectangleArea {
         return RectangleArea(
             world, arrayOf(
-                locs[0].clone().apply {
+                locs[0].clone(), locs[1].clone().apply {
                     when (direction) {
-                        Direction.X -> this.x = (this.x + amount).coerceAtMost(locs[1].x)
-                        Direction.Y -> this.y = (this.y + amount).coerceAtMost(locs[1].y)
-                        Direction.Z -> this.z = (this.z + amount).coerceAtMost(locs[1].z)
+                        Direction.X -> this.x = (locs[0].x + amount)
+                        Direction.Y -> this.y = (locs[0].y + amount)
+                        Direction.Z -> this.z = (locs[0].z + amount)
                     }
-                }, locs[1]
+                }
             )
         )
+    }
+
+    fun longestDirection(): Direction {
+        val length = listOf<Double>(sizeOf(Direction.X), sizeOf(Direction.Y), sizeOf(Direction.Z))
+        return length.maxOf { Direction.values()[length.indexOf(it)] }
     }
 
 }
