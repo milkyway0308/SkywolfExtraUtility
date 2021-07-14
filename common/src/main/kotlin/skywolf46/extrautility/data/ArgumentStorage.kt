@@ -31,11 +31,11 @@ open class ArgumentStorage {
 
     open fun newInstance() = ArgumentStorage()
 
-    fun addProxy(proxy: ArgumentStorage) {
+    open fun addProxy(proxy: ArgumentStorage) {
         proxies.add(proxy)
     }
 
-    fun removeProxy(proxy: ArgumentStorage) {
+    open fun removeProxy(proxy: ArgumentStorage) {
         proxies.remove(proxy)
     }
 
@@ -69,11 +69,11 @@ open class ArgumentStorage {
         addArgument(any)
     }
 
-    fun add(cls: Class<*>, args: Any) {
+    open fun add(cls: Class<*>, args: Any) {
         arguments.computeIfAbsent(cls) { mutableListOf() }.add(args)
     }
 
-    fun setArgument(key: String, any: Any) {
+    open fun setArgument(key: String, any: Any) {
         argumentFixed[key] = any
     }
 
