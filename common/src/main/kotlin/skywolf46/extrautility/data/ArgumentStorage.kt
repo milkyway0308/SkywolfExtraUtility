@@ -40,8 +40,8 @@ open class ArgumentStorage {
     }
 
     open operator fun <T : Any> get(str: String): T? {
-        for (x in proxies.size - 1..0) {
-            proxies[x].get<T>(str)?.run {
+        for (x in proxies.size downTo 0) {
+            proxies[x - 1].get<T>(str)?.run {
                 return this
             }
         }
