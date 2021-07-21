@@ -9,6 +9,7 @@ open class ArgumentStorage {
     protected var argumentFixed = mutableMapOf<String, Any>()
     protected var proxies = mutableListOf<ArgumentStorage>()
 
+    fun keySet() = ArrayList(argumentFixed.keys)
 
     open fun shallowCopy(shallowCopyProxy: Boolean): ArgumentStorage {
         val args = newInstance()
