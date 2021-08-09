@@ -12,6 +12,17 @@ class Randomizer<V : Any> {
         maxCount += amount
     }
 
+    fun remove(item: V) {
+        val iter = map.iterator()
+        while (iter.hasNext()) {
+            val (_, y) = iter.next()
+            if (y == item) {
+                iter.remove()
+                return
+            }
+        }
+    }
+
     fun maxWeight() = maxCount
     fun size() = map.size
 
@@ -19,7 +30,7 @@ class Randomizer<V : Any> {
 
     fun toPercentage(what: V): Double {
         map.entries.forEach {
-            if(it.value == what)
+            if (it.value == what)
                 return it.key / maxCount * 100.0
         }
         return .0

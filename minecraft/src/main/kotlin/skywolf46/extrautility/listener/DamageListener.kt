@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityDamageByEntityEvent
+import org.bukkit.event.entity.EntityDamageEvent
 import org.bukkit.event.entity.EntityDeathEvent
 import skywolf46.extrautility.events.combat.PlayerDamageEntityEvent
 import skywolf46.extrautility.events.combat.PlayerDamagedByEntityEvent
@@ -41,6 +42,18 @@ class DamageListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun EntityDamageByEntityEvent.onPreDeathConditionEvent() {
+        if (entity is Player && (entity as Player).health <= finalDamage) {
+            PlayerPreDeathEvent(entity as Player).callEvent().let {
+                if (it.isCancelled)
+                    it.isCancelled = isCancelled
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    fun EntityDamageEvent.onPreDeathConditionEvent() {
+        if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK || cause == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)
+            return
         if (entity is Player && (entity as Player).health <= finalDamage) {
             PlayerPreDeathEvent(entity as Player).callEvent().let {
                 if (it.isCancelled)

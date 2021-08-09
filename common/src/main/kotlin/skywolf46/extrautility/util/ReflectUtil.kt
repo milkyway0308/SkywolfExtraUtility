@@ -1,13 +1,13 @@
 package skywolf46.extrautility.util
 
-fun <T : Any?> Any.extractField(fieldName: String): Any? {
+fun <T : Any?> Any.extractField(fieldName: String): T? {
     try {
         javaClass.getDeclaredField(fieldName).apply {
             val orig = isAccessible
             isAccessible = true
             return get(this@extractField)?.apply {
                 isAccessible = orig
-            }
+            } as T?
         }
     } catch (e: Exception) {
         return null

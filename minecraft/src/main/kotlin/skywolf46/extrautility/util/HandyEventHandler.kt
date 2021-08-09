@@ -5,6 +5,7 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
+import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.plugin.java.JavaPlugin
 import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
@@ -38,6 +39,7 @@ class HandyEventHandler(private val pl: JavaPlugin) {
                 mtd.isAccessible = true
                 if (mtd.getAnnotation(EventHandler::class.java) != null) {
                     registerHandler(mtd, instance)
+                    println("Registering ${mtd.declaringClass.name}#${mtd.name}")
                 }
             } else {
                 if (mtd.getAnnotation(EventHandler::class.java) != null) {
@@ -72,17 +74,26 @@ class HandyEventHandler(private val pl: JavaPlugin) {
                 registered.add(invoker.priority)
                 Bukkit.getPluginManager().registerEvent(
                     invoker.baseEvent, this, invoker.priority,
-                    { listener, event -> listenEvent(invoker.priority, event) }, pl
+                    { listener, event ->
+                        listenEvent(invoker.priority, event)
+                    }, pl
                 )
             }
             listeners.computeIfAbsent(
                 invoker.priority
-            ) { a: EventPriority? -> ArrayList() }.add(invoker)
+            ) {
+                object : ArrayList<HandyEventInvoker>() {
+                    override fun add(element: HandyEventInvoker): Boolean {
+                        return super.add(element)
+                    }
+                }
+            }.add(invoker)
         }
 
-        fun listenEvent(pr: EventPriority, ev: Event?) {
-            if (listeners.containsKey(pr)) listeners[pr]
-                ?.forEach(Consumer { inv: HandyEventInvoker -> inv.onEvent(ev) })
+        fun listenEvent(pr: EventPriority, ev: Event) {
+            listeners[pr]?.forEach { inv ->
+                inv.onEvent(ev)
+            }
         }
     }
 
@@ -91,14 +102,12 @@ class HandyEventHandler(private val pl: JavaPlugin) {
         private val methodWorker: Method
         val priority: EventPriority
 
-        fun onEvent(ex: Event?) {
+        fun onEvent(ex: Event) {
             val params = arrayOfNulls<Any>(methodWorker.parameters.size)
             params[0] = ex
             try {
                 methodWorker.invoke(obj, *params)
-            } catch (e: IllegalAccessException) {
-                e.printStackTrace()
-            } catch (e: InvocationTargetException) {
+            } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
@@ -107,7 +116,7 @@ class HandyEventHandler(private val pl: JavaPlugin) {
             val handler = mtd.getAnnotation(EventHandler::class.java)
             priority = handler.priority
             baseEvent =
-                if (mtd.parameters.size > 0) if (Event::class.java.isAssignableFrom(mtd.parameters[0].type)) mtd.parameters[0].type as Class<out Event?> else null else null
+                if (mtd.parameters.isNotEmpty() && Event::class.java.isAssignableFrom(mtd.parameters[0].type)) mtd.parameters[0].type as Class<out Event?> else null
             methodWorker = mtd
         }
     }

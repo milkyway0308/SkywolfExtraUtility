@@ -9,7 +9,7 @@ object ClassUtil {
 
     @JvmStatic
     fun Class<*>.iterateParentClasses(iterator: Class<*>.() -> Unit) {
-        var clsOrig : Class<*>? = this
+        var clsOrig: Class<*>? = this
         do {
             if (clsOrig == null)
                 return
@@ -31,9 +31,13 @@ object ClassUtil {
         }.enableClassInfo().enableAnnotationInfo().scan()
         val target = mutableListOf<Class<*>>()
         for (x in scanned.allClasses.filter {
+            if (!it.name.contains('.')){
+                return@filter false
+            }
             for (prefix in ignoredPrefix)
-                if (it.packageName.startsWith(prefix))
+                if (it.name.startsWith(prefix)){
                     return@filter false
+                }
             return@filter true
         }) {
             try {

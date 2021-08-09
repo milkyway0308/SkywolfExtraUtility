@@ -9,6 +9,13 @@ fun String.toDouble(block: Double.() -> Unit): Boolean {
     }
 }
 
+fun String.toPercentage(def: Double): Double {
+    return try {
+        (if (endsWith('%')) substring(0 until length) else this).toDouble()
+    } catch (e: Throwable) {
+        return def
+    }.coerceAtLeast(0.0).coerceAtMost(100.0)
+}
 
 fun String.letDouble(def: Double, block: Double.() -> Double): Double {
     return try {

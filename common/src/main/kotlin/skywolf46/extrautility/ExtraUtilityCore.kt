@@ -43,6 +43,29 @@ object ExtraUtilityCore {
             "org.yaml",
             "javax.",
             "org.sqlite",
+            "it.unimi.dsi",
+            "com.ibm",
+            "net.minecraftforge",
+            "scala",
+            "org.codehaus",
+            "akka.",
+            "LMZA.",
+            "ibxm.",
+            "com.typesafe",
+            "catserver.",
+            "jline.",
+            "joptsimple.",
+            "mcp.",
+            "nl.komponents",
+            "org.objectweb",
+            "org.hamcrest",
+            "oshi.",
+            "guava10.",
+            "foxz.",
+            "cpw.mods.",
+            "com.avaje",
+            "cern.colt",
+
         )
     }
 
@@ -53,8 +76,8 @@ object ExtraUtilityCore {
     }
 
 
-    fun scanHandlers() {
-        MethodUtil.filter(*ClassUtil.scanClass(ignored).toTypedArray())
+    fun scanHandlers(defClass: List<Class<*>>? = null) {
+        MethodUtil.filter( *(defClass?.toTypedArray() ?: ClassUtil.scanClass(ignored).toTypedArray()))
             .filter(false, ExtraEventHandler::class.java, ExtraEventHandler::class.java)
             .filter({
                 System.err.println("Warning: Method ${method.name} in ${method.declaringClass.name} requires instance. Event handling rejected.")

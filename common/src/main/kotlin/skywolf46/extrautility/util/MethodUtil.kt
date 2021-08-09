@@ -9,8 +9,9 @@ import kotlin.reflect.jvm.kotlinFunction
 object MethodUtil {
     fun filter(vararg cls: Class<*>): MethodFilter {
         val methods = mutableListOf<MethodWrapper>()
-        for (x in cls)
+        for (x in cls){
             findMethods(null, x, methods)
+        }
         return MethodFilter(methods)
     }
 

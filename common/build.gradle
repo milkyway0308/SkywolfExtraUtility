@@ -26,6 +26,9 @@ dependencies {
     compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.32'
     compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.4.32'
     implementation "io.github.classgraph:classgraph:4.8.+"
+    implementation "nl.komponents.kovenant:kovenant:3.3.0"
+    api "io.github.classgraph:classgraph:4.8.+"
+    api "nl.komponents.kovenant:kovenant:3.3.0"
 
     testImplementation  group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib'
     testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect'
