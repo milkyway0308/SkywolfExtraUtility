@@ -2,6 +2,7 @@ pluginManagement {
     repositories {
         maven {
             url = uri("http://dja.kr:55201/releases")
+            allowInsecureProtocol(true)
         }
         gradlePluginPortal()
     }
@@ -9,7 +10,6 @@ pluginManagement {
 rootProject.name = 'SkywolfExtraUtility'
 include 'common'
 include 'minecraft'
-include 'all'
 include 'all'
 include 'runtime'
 include 'minecraftRuntime'

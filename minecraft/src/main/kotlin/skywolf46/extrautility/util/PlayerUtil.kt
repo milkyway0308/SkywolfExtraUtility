@@ -4,13 +4,13 @@ import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.bukkit.metadata.FixedMetadataValue
+import skywolf46.extrautility.SkywolfExtraUtility.Companion.inst
 import skywolf46.extrautility.util.ifFalse
 import skywolf46.extrautility.util.ifTrue
 import skywolf46.extrautility.cooldown.PlayerCooldownStorage
-import skywolf46.extrautility.inst
 
 private val cooldown: PlayerCooldownStorage = PlayerCooldownStorage()
-
+private val offMap = mutableMapOf<String, OfflinePlayer>()
 val Player.playerCooldown: PlayerCooldownStorage
     get() = cooldown
 
@@ -23,6 +23,12 @@ fun findPlayerOf(str: String): OfflinePlayer {
 
 fun playerOf(str: String): Player? {
     return Bukkit.getPlayerExact(str)
+}
+
+fun cachePlayerOf(str: String): OfflinePlayer {
+    return offMap.computeIfAbsent(str) {
+        findPlayerOf(str)
+    }
 }
 
 fun connectedPlayerOf(str: String): OfflinePlayer? {

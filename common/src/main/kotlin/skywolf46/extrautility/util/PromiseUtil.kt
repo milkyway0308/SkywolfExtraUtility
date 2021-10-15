@@ -3,6 +3,10 @@ package skywolf46.extrautility.util
 import skywolf46.extrautility.abstraction.IPromise
 import skywolf46.extrautility.impl.PromiseImpl
 
+fun <X : Any> promiseAlways(): IPromise<X, X> {
+    return PromiseImpl()
+}
+
 fun <T : Any, X : Any> promise(): IPromise<T, X> {
     return PromiseImpl()
 }
@@ -21,6 +25,7 @@ fun <T : Any> promise(executor: () -> T): IPromise<T, Throwable> {
     }
     return promise
 }
+
 
 fun emptyPromise(executor: () -> Unit): IPromise<Unit, Throwable> {
     val promise = PromiseImpl<Unit, Throwable>()
@@ -49,6 +54,18 @@ fun <T : Any> promiseSync(executor: () -> T): IPromise<T, Throwable> {
 
 fun <SUCCESS : Any, FAIL : Any> promiseSync(executor: (IPromise<SUCCESS, FAIL>) -> Unit): IPromise<SUCCESS, FAIL> {
     val promise = PromiseImpl<SUCCESS, FAIL>()
+    ThreadingUtil.MAIN_THREAD.submit {
+        try {
+            executor(promise)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+    return promise
+}
+
+fun <X : Any> promiseAlwaysSync(executor: (IPromise<X, X>) -> Unit): IPromise<X, X> {
+    val promise = PromiseImpl<X, X>()
     ThreadingUtil.MAIN_THREAD.submit {
         try {
             executor(promise)
@@ -100,6 +117,22 @@ fun <SUCCESS : Any, FAIL : Any> promiseAsync(
     return promise
 }
 
+
+fun <X : Any> promiseAlwaysAsync(
+    ordered: Boolean = false,
+    executor: (IPromise<X, X>) -> Unit
+): IPromise<X, X> {
+    val promise = PromiseImpl<X, X>()
+    (if (ordered) ThreadingUtil.ASYNC_ORDERED_THREAD else ThreadingUtil.ASYNC_THREAD).submit {
+        try {
+            executor(promise)
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+    return promise
+}
+
 fun emptyPromiseAsync(ordered: Boolean = false, executor: () -> Unit): IPromise<Unit, Throwable> {
     val promise = PromiseImpl<Unit, Throwable>()
     (if (ordered) ThreadingUtil.ASYNC_ORDERED_THREAD else ThreadingUtil.ASYNC_THREAD).submit {
@@ -117,3 +150,4 @@ fun emptyPromiseAsync(ordered: Boolean = false, executor: () -> Unit): IPromise<
 fun <T : Any> IPromise<Unit, T>.trigger() {
     trigger(Unit)
 }
+

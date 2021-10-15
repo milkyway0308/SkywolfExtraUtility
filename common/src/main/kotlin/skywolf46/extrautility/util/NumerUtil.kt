@@ -5,8 +5,3 @@ import kotlin.math.min
 
 fun Number.inRange(x1: Number, x2: Number): Boolean =
     min(x1.toDouble(), x2.toDouble()) <= this.toDouble() && max(x1.toDouble(), x2.toDouble()) >= this.toDouble()
-
-val test : Map<String, Int> = HashMap()
-
-
-

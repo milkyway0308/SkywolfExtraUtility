@@ -12,7 +12,7 @@ import skywolf46.extrautility.util.inRange
 import java.util.*
 import java.util.stream.Collectors
 
-class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
+class RectangleArea(val world: World, val locs: Array<ArrayLocation>, val requirePrecision: Boolean = false) : IArea {
     companion object {
         val instance: RectangleArea = RectangleArea(
             arrayOf(
@@ -30,6 +30,11 @@ class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
         if (locs[0].x > locs[1].x) locs[0].swapX(locs[1])
         if (locs[0].y > locs[1].y) locs[0].swapY(locs[1])
         if (locs[0].z > locs[1].z) locs[0].swapZ(locs[1])
+        if (!requirePrecision) {
+            locs[1].x += 1
+            locs[1].y += 1
+            locs[1].z += 1
+        }
     }
 
     override fun isInArea(x: Location): Boolean {
@@ -69,6 +74,7 @@ class RectangleArea(val world: World, val locs: Array<ArrayLocation>) : IArea {
             }
         }
     }
+
 
     fun slice(direction: Direction, amount: Int): RectangleArea {
         return RectangleArea(

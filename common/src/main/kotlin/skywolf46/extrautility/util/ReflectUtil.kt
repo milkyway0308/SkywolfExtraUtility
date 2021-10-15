@@ -1,5 +1,8 @@
 package skywolf46.extrautility.util
 
+import java.lang.reflect.Field
+import java.lang.reflect.Method
+
 fun <T : Any?> Any.extractField(fieldName: String): T? {
     try {
         javaClass.getDeclaredField(fieldName).apply {
@@ -26,4 +29,15 @@ fun Any.setField(fieldName: String, data: Any?) {
     } catch (e: Exception) {
         e.printStackTrace()
     }
+}
+
+// TODO Add version-specific unlock reflection
+fun Method.unlock() {
+    isAccessible = true
+}
+
+
+// TODO Add version-specific unlock reflection
+fun Field.unlock() {
+    isAccessible = true
 }

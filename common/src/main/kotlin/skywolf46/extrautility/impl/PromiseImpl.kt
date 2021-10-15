@@ -19,7 +19,7 @@ class PromiseImpl<SUCCESS : Any, FAILED : Any> : IPromise<SUCCESS, FAILED> {
     override fun success(data: (SUCCESS) -> Unit) {
         var execute = false
         lock.withLock {
-            if (isCompleted && this.data == null)
+            if (isCompleted && this.data != null)
                 execute = true
             else
                 list += 1 to {
@@ -33,7 +33,7 @@ class PromiseImpl<SUCCESS : Any, FAILED : Any> : IPromise<SUCCESS, FAILED> {
     override fun failed(data: (FAILED) -> Unit) {
         var execute = false
         lock.withLock {
-            if (isCompleted && this.data != null)
+            if (isCompleted && this.error != null)
                 execute = true
             else
                 list += 2 to {

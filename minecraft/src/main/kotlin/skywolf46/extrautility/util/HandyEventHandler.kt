@@ -5,14 +5,12 @@ import org.bukkit.event.Event
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import org.bukkit.event.entity.EntityDamageByEntityEvent
 import org.bukkit.plugin.java.JavaPlugin
-import java.lang.reflect.InvocationTargetException
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
-import java.util.function.Consumer
 
 
+@Deprecated("Deprecated from 1.63.0 - Use @GlobalEventHandler instead", level = DeprecationLevel.WARNING)
 class HandyEventHandler(private val pl: JavaPlugin) {
     private val handyEvent = HashMap<Class<out Event>?, HandyEventListener>()
 
@@ -108,7 +106,8 @@ class HandyEventHandler(private val pl: JavaPlugin) {
             try {
                 methodWorker.invoke(obj, *params)
             } catch (e: Exception) {
-                e.printStackTrace()
+//                e.printStackTrace()
+                // TODO fix it
             }
         }
 

@@ -1,11 +1,27 @@
 package skywolf46.extrautility.util
 
 import io.github.classgraph.ClassGraph
+import io.github.classgraph.ScanResult
 import skywolf46.extrautility.ExtraUtilityCore
 import java.lang.reflect.Modifier
 import kotlin.reflect.KVisibility
 
 object ClassUtil {
+
+    private var cache: ClassFilter? = null
+
+    var updator: () -> List<Class<*>> = {
+        scanClass(ExtraUtilityCore.getIgnoredList())
+    }
+
+    fun getCache(): ClassFilter = cache ?: updateAndGetCache()
+
+
+    fun updateAndGetCache() = run {
+        cache = ClassFilter(updator())
+        return@run cache!!
+    }
+
 
     @JvmStatic
     fun Class<*>.iterateParentClasses(iterator: Class<*>.() -> Unit) {
@@ -22,20 +38,44 @@ object ClassUtil {
         iterator(Any::class.java)
     }
 
+    @Deprecated(
+        "Deprecated from 1.63.0", ReplaceWith(
+            "scanClassExactly(ignoredPrefix, false, *additionalLoader)",
+            "skywolf46.extrautility.util.ClassUtil.scanClassExactly"
+        ),
+        level = DeprecationLevel.WARNING
+    )
     @JvmOverloads
     @JvmStatic
     fun scanClass(ignoredPrefix: List<String> = emptyList(), vararg additionalLoader: ClassLoader): List<Class<*>> {
-        val scanned = ClassGraph().apply {
-            for (x in additionalLoader)
-                addClassLoader(x)
-        }.enableClassInfo().enableAnnotationInfo().scan()
+        return scanClassExactly(ignoredPrefix, false, *additionalLoader)
+    }
+
+    @JvmOverloads
+    @JvmStatic
+    fun scanClassExactly(
+        ignoredPrefix: List<String> = emptyList(),
+        replaceClassLoader: Boolean = true,
+        vararg additionalLoader: ClassLoader
+    ): List<Class<*>> {
+        return scanClass0(ignoredPrefix, ClassGraph().apply {
+            if (replaceClassLoader) {
+                overrideClassLoaders(*additionalLoader)
+            } else {
+                for (x in additionalLoader)
+                    addClassLoader(x)
+            }
+        }.enableClassInfo().enableAnnotationInfo().scan())
+    }
+
+    private fun scanClass0(ignoredPrefix: List<String> = emptyList(), scanned: ScanResult): List<Class<*>> {
         val target = mutableListOf<Class<*>>()
         for (x in scanned.allClasses.filter {
-            if (!it.name.contains('.')){
+            if (!it.name.contains('.')) {
                 return@filter false
             }
             for (prefix in ignoredPrefix)
-                if (it.name.startsWith(prefix)){
+                if (it.name.startsWith(prefix)) {
                     return@filter false
                 }
             return@filter true
@@ -51,23 +91,54 @@ object ClassUtil {
     }
 
 
-    class ClassFilter {
-        val vis = KVisibility.INTERNAL
+    class ClassFilter(val list: List<Class<*>>) {
+        fun filter(vararg filter: ReflectionClassFilter): ClassFilter {
+            return ClassFilter(list.filter { x -> filter.all { it.filter(x) } })
+        }
+
+        fun filter(annotation: Class<out Annotation>): ClassFilter {
+            return ClassFilter(list.filter { x -> x.getAnnotation(annotation) != null })
+        }
+
+        @Suppress("LABEL_NAME_CLASH")
+        fun filter(requireAllAnnotation: Boolean, vararg annotation: Class<out Annotation>): ClassFilter {
+            return if (requireAllAnnotation)
+                ClassFilter(list.filter { x ->
+                    for (data in annotation)
+                        if (x.getAnnotation(data) == null)
+                            return@filter false
+                    return@filter true
+                })
+            else ClassFilter(list.filter { x ->
+                for (data in annotation)
+                    if (x.getAnnotation(data) != null)
+                        return@filter true
+                return@filter false
+            })
+        }
+
+
+        fun <X : Annotation> filter(annotation: Class<X>, unit: (X) -> Boolean): ClassFilter {
+            return ClassFilter(list.filter { x -> x.getAnnotation(annotation)?.run(unit) == true })
+        }
+
+        fun toMethodFilter() = MethodUtil.filter(*list.toTypedArray())
+
     }
 
     enum class ReflectionClassFilter(
         private val negative: () -> ReflectionClassFilter,
-        private val methodFilter: Class<*>.(Any?) -> Boolean,
+        private val methodFilter: Class<*>.() -> Boolean,
     ) {
         /*
-            Accept static method.
+            Accept static class.
          */
         STATIC({ NON_STATIC }, {
             modifiers.and(Modifier.STATIC) != 0
         }),
 
         /*
-            Accept non-static method.
+            Accept non-static class.
          */
         NON_STATIC({ STATIC }, {
             modifiers.and(Modifier.STATIC) == 0
@@ -81,14 +152,14 @@ object ClassUtil {
         }),
 
         /*
-            Accept non-synthetic method.
+            Accept non-synthetic class.
          */
         NON_SYNTHETIC({ SYNTHETIC }, {
             !isSynthetic
         }),
 
         /*
-            Accept private method.
+            Accept private class.
          */
         ACCESSOR_PRIVATE({ ACCESSOR_NON_PRIVATE },
             {
@@ -96,7 +167,7 @@ object ClassUtil {
             }),
 
         /*
-            Accept non-private method.
+            Accept non-private class.
          */
         ACCESSOR_NON_PRIVATE({ ACCESSOR_PRIVATE },
             {
@@ -104,7 +175,7 @@ object ClassUtil {
             }),
 
         /*
-            Accept protected method.
+            Accept protected class.
          */
         ACCESSOR_PROTECTED({ ACCESSOR_NON_PROTECTED },
             {
@@ -112,7 +183,7 @@ object ClassUtil {
             }),
 
         /*
-            Accept non-protected method.
+            Accept non-protected class.
          */
         ACCESSOR_NON_PROTECTED({ ACCESSOR_PROTECTED },
             {
@@ -120,7 +191,7 @@ object ClassUtil {
             }),
 
         /*
-            Accept public method.
+            Accept public class.
          */
         ACCESSOR_PUBLIC({ ACCESSOR_NON_PUBLIC },
             {
@@ -128,7 +199,7 @@ object ClassUtil {
             }),
 
         /*
-            Accept public method.
+            Accept non-public class.
          */
         ACCESSOR_NON_PUBLIC({ ACCESSOR_PUBLIC },
             {
@@ -136,7 +207,7 @@ object ClassUtil {
             }),
 
         /*
-            Accept kotlin internal method.
+            Accept kotlin internal class.
          */
         ACCESSOR_INTERNAL({ ACCESSOR_NON_INTERNAL },
             {
@@ -145,7 +216,7 @@ object ClassUtil {
             }),
 
         /*
-            Accept non-kotlin internal method.
+            Accept non-kotlin internal class.
          */
         ACCESSOR_NON_INTERNAL({ ACCESSOR_INTERNAL },
             {
@@ -153,26 +224,26 @@ object ClassUtil {
             }),
 
         /*
-            Accept instance required method.
+            Accept object class (kotlin).
          */
         INSTANCE_REQUIRED(
             { INSTANCE_NOT_REQUIRED }, {
-                it == null && !STATIC.filter(this, it)
+                kotlin.objectInstance == null
             }
         ),
 
         /*
-            Accept instance not required method like static, or kotlin object, kotlin companion.
+            Accept non-object class (kotlin).
          */
         INSTANCE_NOT_REQUIRED(
             { INSTANCE_REQUIRED }, {
-                STATIC.filter(this, it) || it != null
+                !INSTANCE_REQUIRED.filter(this)
             }
         );
 
         fun negative() = this.negative.invoke()
 
-        fun filter(mtd: Class<*>, instance: Any?): Boolean = methodFilter.invoke(mtd, instance)
+        fun filter(mtd: Class<*>): Boolean = methodFilter.invoke(mtd)
     }
 
 }

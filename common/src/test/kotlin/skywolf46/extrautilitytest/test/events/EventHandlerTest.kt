@@ -29,7 +29,7 @@ class EventHandlerTest {
 
     @Test
     fun invokeAndListen() {
-        ExtraUtilityCore.scanHandlers()
+        ExtraUtilityCore.scanLegacyEventHandlers()
         val data = TestData("Test2")
         ExtraUtilityCore.callEvent(data)
         Assert.assertEquals("Test3", data.data)
@@ -37,7 +37,7 @@ class EventHandlerTest {
 
     @Test
     fun invokeImplementationAndListen() {
-        ExtraUtilityCore.scanHandlers()
+        ExtraUtilityCore.scanLegacyEventHandlers()
         val data = DeepTestData(20, "Test2")
         ExtraUtilityCore.callEvent(data)
         Assert.assertEquals(40, data.secondary)

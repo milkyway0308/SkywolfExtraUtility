@@ -1,15 +1,23 @@
 package skywolf46.extrautility.util
 
-import skywolf46.extrautility.ExtraUtilityCore
 import java.lang.reflect.Method
 import java.lang.reflect.Modifier
 import kotlin.reflect.full.companionObjectInstance
 import kotlin.reflect.jvm.kotlinFunction
 
 object MethodUtil {
+    private var cache: MethodFilter? = null
+
+    fun getCache() = cache ?: updateAndGetCache()
+
+    fun updateAndGetCache() = kotlin.run {
+        cache = ClassUtil.getCache().toMethodFilter()
+        return@run cache!!
+    }
+
     fun filter(vararg cls: Class<*>): MethodFilter {
         val methods = mutableListOf<MethodWrapper>()
-        for (x in cls){
+        for (x in cls) {
             findMethods(null, x, methods)
         }
         return MethodFilter(methods)
@@ -18,7 +26,7 @@ object MethodUtil {
     private fun findMethods(instance: Any?, cls: Class<*>, methodList: MutableList<MethodWrapper>) {
         try {
             try {
-               if (cls.kotlin.companionObjectInstance != null) {
+                if (cls.kotlin.companionObjectInstance != null) {
                     forceFindMethods(
                         cls.kotlin.companionObjectInstance,
                         cls.kotlin.companionObjectInstance!!.javaClass,
@@ -224,7 +232,8 @@ object MethodUtil {
          */
         INSTANCE_REQUIRED(
             { INSTANCE_NOT_REQUIRED }, {
-                !Modifier.isStatic(modifiers) && it == null
+                val kotlin = declaringClass.kotlin
+                (!Modifier.isStatic(modifiers) && it == null) || (!kotlin.isCompanion && kotlin.objectInstance == null)
             }
         ),
 
@@ -233,7 +242,7 @@ object MethodUtil {
          */
         INSTANCE_NOT_REQUIRED(
             { INSTANCE_REQUIRED }, {
-                Modifier.isStatic(modifiers) || it != null
+                !INSTANCE_REQUIRED.filter(this, it)
             }
         );
 

@@ -2,10 +2,9 @@ package skywolf46.extrautility.util
 
 import org.bukkit.entity.Entity
 import org.bukkit.metadata.FixedMetadataValue
+import skywolf46.extrautility.SkywolfExtraUtility.Companion.inst
 import skywolf46.extrautility.util.ifFalse
 import skywolf46.extrautility.util.ifTrue
-import skywolf46.extrautility.inst
-
 
 fun Entity.hasValue(str: String): Boolean = hasMetadata(str)
 

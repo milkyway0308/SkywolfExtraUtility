@@ -52,8 +52,8 @@ class DamageListener : Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     fun EntityDamageEvent.onPreDeathConditionEvent() {
-        if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK || cause == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)
-            return
+//        if (cause == EntityDamageEvent.DamageCause.ENTITY_ATTACK || cause == EntityDamageEvent.DamageCause.ENTITY_SWEEP_ATTACK)
+//            return
         if (entity is Player && (entity as Player).health <= finalDamage) {
             PlayerPreDeathEvent(entity as Player).callEvent().let {
                 if (it.isCancelled)

@@ -4,8 +4,6 @@ import org.bukkit.Location
 import org.bukkit.event.block.Action
 import org.bukkit.event.player.PlayerInteractEvent
 import skywolf46.extrautility.areas.impl.RectangleArea
-import skywolf46.messagereplacer.MessageReplacer
-import skywolf46.placeholders.util.MessageParameters
 
 class AreaPositionalHandler(ar: IArea) {
     val loc = Array<Location?>(ar.point()) { null }
@@ -19,44 +17,44 @@ class AreaPositionalHandler(ar: IArea) {
         when (e.action) {
             Action.LEFT_CLICK_BLOCK -> {
                 if (isCompleted()) {
-                    MessageReplacer.get(fail.javaClass)[fail.name]
-                        .sendParameterTo(
-                            e.player,
-                            MessageParameters()
-                                .add("currentArea", pointer.toString())
-                                .add("maxArea", loc.size.toString())
-                        )
+//                    MessageReplacer.get(fail.javaClass)[fail.name]
+//                        .sendParameterTo(
+//                            e.player,
+//                            MessageParameters()
+//                                .add("currentArea", pointer.toString())
+//                                .add("maxArea", loc.size.toString())
+//                        )
                     return
                 }
                 loc[pointer++] = e.clickedBlock.location
-                MessageReplacer.get(success.javaClass)[success.name]
-                    .sendParameterTo(
-                        e.player,
-                        MessageParameters()
-                            .add("currentArea", pointer.toString())
-                            .add("maxArea", loc.size.toString())
-                    )
+//                MessageReplacer.get(success.javaClass)[success.name]
+//                    .sendParameterTo(
+//                        e.player,
+//                        MessageParameters()
+//                            .add("currentArea", pointer.toString())
+//                            .add("maxArea", loc.size.toString())
+//                    )
                 return
             }
             Action.RIGHT_CLICK_BLOCK -> {
                 if (pointer == 0) {
-                    MessageReplacer.get(deleteFail.javaClass)[deleteFail.name]
-                        .sendParameterTo(
-                            e.player,
-                            MessageParameters()
-                                .add("currentArea", pointer.toString())
-                                .add("maxArea", loc.size.toString())
-                        )
+//                    MessageReplacer.get(deleteFail.javaClass)[deleteFail.name]
+//                        .sendParameterTo(
+//                            e.player,
+//                            MessageParameters()
+//                                .add("currentArea", pointer.toString())
+//                                .add("maxArea", loc.size.toString())
+//                        )
                     return
                 }
                 loc[--pointer] = null
-                MessageReplacer.get(delete.javaClass)[delete.name]
-                    .sendParameterTo(
-                        e.player,
-                        MessageParameters()
-                            .add("currentArea", pointer.toString())
-                            .add("maxArea", loc.size.toString())
-                    )
+//                MessageReplacer.get(delete.javaClass)[delete.name]
+//                    .sendParameterTo(
+//                        e.player,
+//                        MessageParameters()
+//                            .add("currentArea", pointer.toString())
+//                            .add("maxArea", loc.size.toString())
+//                    )
                 return
             }
             else -> return
