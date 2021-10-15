@@ -18,17 +18,17 @@ operator fun <T : Inventory> T.plusAssign(item: ItemStack): Unit {
 }
 
 fun Inventory.addItemNaturally(item: ItemStack, amount: Int) {
-    var amount = amount
-    while (amount > 0) {
+    var leftAmount = amount
+    while (leftAmount > 0) {
         val target: ItemStack = item.clone()
-        if (amount >= item.type.maxStackSize) {
+        if (leftAmount >= item.type.maxStackSize) {
             target.amount = item.type.maxStackSize
             addItem(target)
-            amount -= item.type.maxStackSize
+            leftAmount -= item.type.maxStackSize
         } else {
-            target.amount = amount
+            target.amount = leftAmount
             addItem(target)
-            amount = 0
+            leftAmount = 0
         }
     }
 }

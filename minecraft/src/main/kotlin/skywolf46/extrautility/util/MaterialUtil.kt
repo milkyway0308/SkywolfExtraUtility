@@ -5,14 +5,14 @@ import org.bukkit.Material
 
 class MaterialUtil {
     fun parseStringName(type: String): ItemTypeData? {
-        var type = type
+        var targetType = type
         var durability: Short = 0
-        if (type.contains(":")) {
-            val split = type.split(":").toTypedArray()
-            type = split[0]
+        if (targetType.contains(":")) {
+            val split = targetType.split(":").toTypedArray()
+            targetType = split[0]
             durability = split[1].toShort()
         }
-        val data = Material.matchMaterial(type) ?: return null
+        val data = Material.matchMaterial(targetType) ?: return null
         return ItemTypeData(data, durability)
     }
 

@@ -71,7 +71,7 @@ class HandyEventHandler(private val pl: JavaPlugin) {
                 registered.add(invoker.priority)
                 Bukkit.getPluginManager().registerEvent(
                     invoker.baseEvent, this, invoker.priority,
-                    { listener, event ->
+                    { _, event ->
                         listenEvent(invoker.priority, event)
                     }, pl
                 )
@@ -79,11 +79,7 @@ class HandyEventHandler(private val pl: JavaPlugin) {
             listeners.computeIfAbsent(
                 invoker.priority
             ) {
-                object : ArrayList<HandyEventInvoker>() {
-                    override fun add(element: HandyEventInvoker): Boolean {
-                        return super.add(element)
-                    }
-                }
+                mutableListOf()
             }.add(invoker)
         }
 

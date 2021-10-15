@@ -2,10 +2,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.1.0" apply false
     id "org.jetbrains.kotlin.jvm" version "1.5.31" apply false
     id "java"
-}
-
-gradle.buildFinished {
-    delete file("$rootDir/addonJarsTemp")
+    id "idea"
 }
 
 subprojects {
@@ -44,6 +41,19 @@ subprojects {
         }
         outputs.upToDateWhen { false }
     }
+}
 
 
+gradle.taskGraph.whenReady {
+    File file = file("$rootDir/addonJarsTemp")
+    file.mkdirs()
+    idea {
+        module {
+            excludeDirs += file
+        }
+    }
+}
+
+gradle.buildFinished {
+    delete file("$rootDir/addonJarsTemp")
 }

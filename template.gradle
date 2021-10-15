@@ -1,5 +1,3 @@
 gradle.buildFinished {
     project.buildDir.deleteDir()
 }
-
-buildS

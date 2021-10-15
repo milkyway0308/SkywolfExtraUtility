@@ -34,7 +34,4 @@ class WrappedChunks<X : Any> : HashMap<Pair<Int, Int>, X>() {
         return map { x -> x.key }.associateWith { x -> world.getChunkAt(x.first, x.second) }
     }
 
-    fun toChunkValueMap(world: World) {
-
-    }
 }

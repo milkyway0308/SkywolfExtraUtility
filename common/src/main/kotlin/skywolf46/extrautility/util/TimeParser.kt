@@ -35,18 +35,18 @@ object TimeParser {
     }
 
     private fun parse(original: String, toParse: String, parser: ParsingType?): Long {
-        var toParse = toParse
+        var targetString = toParse
         var target: String? = null
-        for (i in toParse.indices) {
-            if (!toParse[i].isDigit()) {
-                target = toParse.substring(0, i)
-                toParse = toParse.substring(i)
+        for (i in targetString.indices) {
+            if (!targetString[i].isDigit()) {
+                target = targetString.substring(0, i)
+                targetString = targetString.substring(i)
                 break
             }
         }
         checkNotNull(target) { "Time is not number" }
-        check(parser!!.canAccept(toParse)) { "Cannot parse \"$toParse\" at \"$original\" : Not a parsing target" }
-        val fi = parser.parser(toParse)
+        check(parser!!.canAccept(targetString)) { "Cannot parse \"$targetString\" at \"$original\" : Not a parsing target" }
+        val fi = parser.parser(targetString)
             ?: return Int.MIN_VALUE.toLong()
         return fi.apply(target).toLong()
     }

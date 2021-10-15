@@ -52,7 +52,7 @@ open class ArgumentStorage {
     open operator fun <T : Any> get(cls: Class<T>): List<T> {
         val next = mutableListOf<Any>()
         for (x in proxies.size downTo 1) {
-            next.addAll(proxies[x - 1].get(cls))
+            next.addAll(proxies[x - 1][cls])
         }
         arguments[cls]?.apply {
             next.addAll(this)

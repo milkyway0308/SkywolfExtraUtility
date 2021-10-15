@@ -34,12 +34,4 @@ class PlayerPreDeathEvent(pl: Player) : PlayerEvent(pl), Cancellable {
         cancel = p0
     }
 
-    operator fun Location.invoke(mat: Material) {
-
-    }
-
-    fun test(block: Block) {
-        block.location(Material.PAPER)
-    }
-
 }
