@@ -3,8 +3,8 @@ package skywolf46.extrautility.areas
 import org.bukkit.Location
 import org.bukkit.World
 
-class ArrayLocation(val xyz: Array<Double>) : Cloneable {
-    constructor(x: Location) : this(arrayOf(x.x, x.y, x.z))
+class ArrayLocation(val xyz: DoubleArray) : Cloneable {
+    constructor(x: Location) : this(doubleArrayOf(x.x, x.y, x.z))
 
     fun location(wx: World) = Location(wx, xyz[0], xyz[1], xyz[2])
 

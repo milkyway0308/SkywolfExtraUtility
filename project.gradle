@@ -3,18 +3,6 @@ apply plugin: 'maven-publish'
 apply plugin: "com.github.johnrengelman.shadow"
 apply plugin: "org.jetbrains.kotlin.jvm"
 
-repositories {
-    mavenCentral()
-    maven {
-        url = uri(rootProject.properties["reposilite.release"])
-        allowInsecureProtocol(true)
-    }
-    maven {
-        url = uri(rootProject.properties["reposilite.spigot"])
-        allowInsecureProtocol(true)
-    }
-}
-
 
 processResources {
     filesMatching(["loaderDeclaration.properties", "plugin.yml", "bungee.yml"]*.toString()) {

@@ -2,9 +2,10 @@ apply from: "../project.gradle"
 apply from: "../publish.gradle"
 
 dependencies {
-    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: project.KOTLIN_VERSION
+    compileOnly(project(":common"))
+    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: "1.5.31"
     compileOnly group: 'org.spigotmc', name: 'spigot', version: '1.12.2'
     compileOnly group: 'skywolf46', name: 'placeholders-core', version: '2.0.5'
-    compileOnly(project(":common"))
+
     implementation(project(":common"))
 }

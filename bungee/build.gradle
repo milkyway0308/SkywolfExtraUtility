@@ -1,0 +1,10 @@
+apply from: '../project.gradle'
+apply from: '../publish.gradle'
+
+dependencies {
+    compileOnly("org.spigotmc:bungeecord:latest.release")
+    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.5.31'
+
+    implementation(project(":common"))
+    implementation group: 'net.bytebuddy', name: 'byte-buddy-dep', version: '1.11.20'
+}

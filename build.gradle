@@ -1,6 +1,11 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.0" apply false
     id "org.jetbrains.kotlin.jvm" version "1.5.31" apply false
+    id "java"
+}
+
+gradle.buildFinished {
+    delete file("$rootDir/addonJarsTemp")
 }
 
 subprojects {
@@ -9,13 +14,26 @@ subprojects {
     apply plugin: "com.github.johnrengelman.shadow"
     apply plugin: "org.jetbrains.kotlin.jvm"
 
+    repositories {
+        mavenCentral()
+        maven {
+            url = uri(rootProject.properties["reposilite.release"])
+            allowInsecureProtocol(true)
+        }
+        maven {
+            url = uri(rootProject.properties["reposilite.spigot"])
+            allowInsecureProtocol(true)
+        }
+    }
+
     jar {
-        archiveBaseName.set("SkywolfExtraUtility-${this.name}")
-        destinationDirectory = file("$rootDir/addonJars")
+        archiveBaseName.set("SkywolfExtraUtility-${project.name.capitalize()}")
+        destinationDirectory = file("$rootDir/addonJarsTemp")
         finalizedBy("shadowJar")
     }
 
     shadowJar {
+        archiveBaseName.set("SkywolfExtraUtility-${project.name.capitalize()}")
         destinationDirectory = file("$rootDir/addonJars")
         classifier("")
     }

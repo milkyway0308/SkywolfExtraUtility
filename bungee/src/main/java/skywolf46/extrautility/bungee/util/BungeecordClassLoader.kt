@@ -8,6 +8,7 @@ import skywolf46.extrautility.util.ClassUtil
 
 object BungeecordClassLoader {
     fun loadAllClass(): List<Class<*>> {
+
         return ClassUtil.scanClassExactly(ExtraUtilityCore.getIgnoredList(), false, *mutableListOf<ClassLoader>().apply {
             for (x in BungeeCord.getInstance().pluginManager.plugins) {
                 if (x.javaClass.getAnnotation(AllowScanning::class.java) != null) {
