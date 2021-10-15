@@ -37,7 +37,6 @@ class HandyEventHandler(private val pl: JavaPlugin) {
                 mtd.isAccessible = true
                 if (mtd.getAnnotation(EventHandler::class.java) != null) {
                     registerHandler(mtd, instance)
-                    println("Registering ${mtd.declaringClass.name}#${mtd.name}")
                 }
             } else {
                 if (mtd.getAnnotation(EventHandler::class.java) != null) {

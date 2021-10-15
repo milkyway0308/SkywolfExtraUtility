@@ -20,4 +20,4 @@ package skywolf46.extrautility.annotations.handler
  */
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.FUNCTION)
-annotation class GlobalEventHandler(val handlerSector: String = "", val priority: Int = 0)
+annotation class GlobalEventHandler(val priority: Int = 0, val sector: String = "")

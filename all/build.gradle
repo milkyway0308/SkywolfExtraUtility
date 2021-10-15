@@ -1,39 +1,6 @@
+apply from: '../template.gradle'
+apply from: '../publish.gradle'
+
 dependencies {
     implementation(project(":minecraft"))
 }
-
-
-jar {
-    baseName "SkywolfExtraUtility"
-    destinationDirectory = file("$rootDir/addonJars")
-    finalizedBy("shadowJar")
-}
-
-shadowJar {
-    baseName "SkywolfExtraUtility"
-    destinationDirectory = file("$rootDir/addonJars")
-}
-
-
-publishing {
-    repositories {
-        maven {
-            name = "Reposilite"
-            url(rootProject.properties["snapshot"] as Boolean ? rootProject.properties['reposilite.snapshot'] as String : rootProject.properties['reposilite.release'] as String)
-            allowInsecureProtocol(true)
-            credentials {
-                username rootProject.properties['reposilite.user'] as String
-                password rootProject.properties['reposilite.token'] as String
-            }
-        }
-    }
-    publications {
-        create("jar", MavenPublication) {
-            groupId 'skywolf46'
-            artifactId "exutil"
-            version rootProject.properties['version'] as String
-            from components.java
-        }
-    }
-}
-

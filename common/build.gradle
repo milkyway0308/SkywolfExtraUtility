@@ -1,55 +1,11 @@
-jar {
-    destinationDirectory = file("$rootDir/addonJars")
-    dependsOn("shadowJar")
-}
+apply from: '../project.gradle'
+apply from: '../publish.gradle'
+apply from: '../unitTest.gradle'
 
 dependencies {
-    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.4.32'
-    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.4.32'
-    api "io.github.classgraph:classgraph:4.8.126"
-    api "nl.komponents.kovenant:kovenant:3.3.0"
-    shadow "io.github.classgraph:classgraph:4.8.126"
-    shadow "nl.komponents.kovenant:kovenant:3.3.0"
+    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.5.31'
+    compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.5.31'
 
-    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib'
-    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect'
-    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.7.1")
-    testImplementation("org.junit.platform:junit-platform-runner:1.7.1")
+    implementation group: "io.github.classgraph", name: 'classgraph', version: '4.8.126'
+    implementation group: "nl.komponents.kovenant", name: 'kovenant', version: '3.3.0'
 }
-
-test {
-    useJUnitPlatform()
-}
-
-jar {
-    baseName "SkywolfExtraUtility-${project.name.capitalize()}"
-}
-
-compileKotlin {
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-}
-
-publishing {
-    repositories {
-        maven {
-            name = "Reposilite"
-            url(rootProject.properties["snapshot"] as Boolean ? rootProject.properties['reposilite.snapshot'] as String : rootProject.properties['reposilite.release'] as String)
-            credentials {
-                username rootProject.properties['reposilite.user'] as String
-                password rootProject.properties['reposilite.token'] as String
-            }
-        }
-    }
-    publications {
-        create("jar", MavenPublication) {
-            groupId 'skywolf46'
-            artifactId "exutil-core"
-            version rootProject.properties['version'] as String
-            from components.java
-        }
-    }
-}
-

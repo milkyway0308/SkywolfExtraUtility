@@ -1,0 +1,13 @@
+apply plugin: 'java'
+
+dependencies {
+    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib'
+    testImplementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.8.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-params', version: '5.8.1'
+    testImplementation group: 'org.junit.platform', name: 'junit-platform-runner', version: '1.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}

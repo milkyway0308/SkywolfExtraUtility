@@ -14,6 +14,7 @@ import kotlin.reflect.full.companionObject
 object EventUtil {
     private val eventRegistryProvider = mutableMapOf<Class<*>, IEventProducer<*>>()
     private val eventListenerRegistry = mutableMapOf<Class<*>, MutableMap<String, HandlerStorage>>()
+    private val registeredClassList = mutableSetOf<Class<*>>()
     fun <X : Any> registerProducer(clazz: Class<X>, producer: IEventProducer<X>) {
         eventRegistryProvider[clazz] = producer
     }
@@ -32,9 +33,7 @@ object EventUtil {
 
     // Companion / Object registration
     fun registerViaAnnotation(method: Method, instance: Any?): EventRegistrationResult {
-        println("Processing ${method.name}")
         method.getAnnotation(GlobalEventHandler::class.java)?.let { handler ->
-            println("..Registering ${method.name}")
             if (method.parameters.isEmpty()) {
                 return EventRegistrationResult.TOO_FEW_ARGUMENTS
             }
@@ -44,8 +43,11 @@ object EventUtil {
             val next = method.parameters[0].type
             // Registration
             next.iterateParentClasses {
-                (eventRegistryProvider[this] as IEventProducer<Any>?)?.run {
-                    produce(next as Class<Any>, handler.handlerSector, handler.priority)
+                if (this !in registeredClassList) {
+                    registeredClassList += this
+                    (eventRegistryProvider[this] as IEventProducer<Any>?)?.run {
+                        produce(next as Class<Any>, handler.sector, handler.priority)
+                    }
                 }
             }
             method.unlock()
@@ -55,8 +57,8 @@ object EventUtil {
                 computeIfAbsent("") {
                     HandlerStorage()
                 }.registerEvent(handler.priority, MethodInvoker(method, instance))
-                if (handler.handlerSector.isNotEmpty())
-                    computeIfAbsent(handler.handlerSector) {
+                if (handler.sector.isNotEmpty())
+                    computeIfAbsent(handler.sector) {
                         HandlerStorage()
                     }.registerEvent(handler.priority, MethodInvoker(method, instance))
             }
