@@ -26,6 +26,7 @@ subprojects {
     jar {
         archiveBaseName.set("SkywolfExtraUtility-${project.name.capitalize()}")
         destinationDirectory = file("$rootDir/addonJarsTemp")
+        classifier("pure")
         finalizedBy("shadowJar")
     }
 

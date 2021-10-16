@@ -1,7 +1,7 @@
 apply from: "../template.gradle"
-apply from: "../publish.gradle"
 
 dependencies {
+    implementation(project(":common"))
     implementation(project(":minecraft"))
     implementation group: 'org.jetbrains.kotlin', name: 'kotlin-stdlib', version: '1.5.31'
     implementation group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.5.31'

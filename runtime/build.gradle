@@ -1,5 +1,4 @@
 apply from: "../template.gradle"
-apply from: "../publish.gradle"
 
 dependencies {
     implementation(project(":common"))
