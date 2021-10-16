@@ -1,8 +1,5 @@
 package skywolf46.extrautility.events.combat
 
-import org.bukkit.Location
-import org.bukkit.Material
-import org.bukkit.block.Block
 import org.bukkit.entity.Player
 import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
@@ -14,15 +11,15 @@ class PlayerPreDeathEvent(pl: Player) : PlayerEvent(pl), Cancellable {
 
 
     override fun getHandlers(): HandlerList {
-        return _handle
+        return handlerList
     }
 
     companion object {
-        internal val _handle = HandlerList()
+        internal val handlerList = HandlerList()
 
         @JvmStatic
         fun getHandlerList(): HandlerList {
-            return _handle
+            return handlerList
         }
     }
 

@@ -8,16 +8,16 @@ import org.bukkit.event.player.PlayerEvent
 
 class PlayerKilledEntityEvent(who: Player?, val entity: Entity) : PlayerEvent(who) {
     override fun getHandlers(): HandlerList {
-        return _handle
+        return handlerList
     }
 
     companion object {
 
-        internal val _handle = HandlerList()
+        internal val handlerList = HandlerList()
 
         @JvmStatic
         fun getHandlerList(): HandlerList {
-            return _handle
+            return handlerList
         }
     }
 }

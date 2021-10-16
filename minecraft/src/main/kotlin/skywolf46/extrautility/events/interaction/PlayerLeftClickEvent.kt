@@ -9,16 +9,16 @@ import skywolf46.extrautility.events.abstraction.AbstractPlayerItemEvent
 class PlayerLeftClickEvent(ev: PlayerInteractEvent, who: Player?, val isBlockInteraction: Boolean) :
     AbstractPlayerItemEvent(ev, who) {
     override fun getHandlers(): HandlerList {
-        return _handle
+        return handlerList
     }
 
     companion object {
 
-        internal val _handle = HandlerList()
+        internal val handlerList = HandlerList()
 
         @JvmStatic
         fun getHandlerList(): HandlerList {
-            return _handle
+            return handlerList
         }
     }
 }

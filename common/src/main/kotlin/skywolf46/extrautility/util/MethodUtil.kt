@@ -23,6 +23,14 @@ object MethodUtil {
         return MethodFilter(methods)
     }
 
+    fun filter(cls: List<Class<*>>): MethodFilter {
+        val methods = mutableListOf<MethodWrapper>()
+        for (x in cls) {
+            findMethods(null, x, methods)
+        }
+        return MethodFilter(methods)
+    }
+
     private fun findMethods(instance: Any?, cls: Class<*>, methodList: MutableList<MethodWrapper>) {
         try {
             try {

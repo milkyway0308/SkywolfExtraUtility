@@ -61,7 +61,7 @@ class SkywolfExtraUtility : JavaPlugin() {
         try {
             Class.forName("org.bukkit.inventory.EquipmentSlot")
             Bukkit.getPluginManager().registerEvents(InteractionListener(), this)
-        } catch (e: Exception) {
+        } catch (_: ClassNotFoundException) {
             log("§e[ExtraUtility] §cUnsupported version! Disabling event support.")
         }
     }

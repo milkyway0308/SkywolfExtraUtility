@@ -122,7 +122,7 @@ object ClassUtil {
             return ClassFilter(list.filter { x -> x.getAnnotation(annotation)?.run(unit) == true })
         }
 
-        fun toMethodFilter() = MethodUtil.filter(*list.toTypedArray())
+        fun toMethodFilter() = MethodUtil.filter(list)
 
     }
 

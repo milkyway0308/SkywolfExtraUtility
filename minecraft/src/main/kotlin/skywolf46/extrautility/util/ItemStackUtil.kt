@@ -40,17 +40,17 @@ fun Inventory.getLeftSlot(item: ItemStack): Int {
 fun Inventory.takeItem(item: ItemStack?, amount: Int) {
     var leftAmount = amount
     for (i in 0 until size) {
-        if (leftAmount == 0) return
+        if (leftAmount == 0) break
         val it: ItemStack? = getItem(i)
         if (it == null || it.type === Material.AIR) continue
         if (it.isSimilar(item)) {
             if (it.amount > leftAmount) {
                 it.amount = it.amount - leftAmount
-                return
+                break
             }
             if (it.amount == leftAmount) {
                 setItem(i, ItemStack(Material.AIR))
-                return
+                break
             }
             leftAmount -= it.amount
             setItem(i, ItemStack(Material.AIR))

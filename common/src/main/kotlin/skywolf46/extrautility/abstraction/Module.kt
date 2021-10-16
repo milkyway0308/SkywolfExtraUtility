@@ -2,7 +2,10 @@ package skywolf46.extrautility.abstraction
 
 import skywolf46.extrautility.util.ModuleGroup
 
-abstract class AbstractModule {
+open class Module
+    // To prevent direct creation
+    protected constructor() {
+
     open fun onAttach(group: ModuleGroup) {
         // Empty for implementation
     }

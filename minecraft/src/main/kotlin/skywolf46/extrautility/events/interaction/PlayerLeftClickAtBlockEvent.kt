@@ -10,16 +10,16 @@ class PlayerLeftClickAtBlockEvent(ev: PlayerInteractEvent, who: Player?, val tar
     AbstractPlayerItemEvent(ev, who) {
 
     override fun getHandlers(): HandlerList {
-        return _handle
+        return handlerList
     }
 
     companion object {
 
-        internal val _handle = HandlerList()
+        internal val handlerList = HandlerList()
 
         @JvmStatic
         fun getHandlerList(): HandlerList {
-            return _handle
+            return handlerList
         }
     }
 }

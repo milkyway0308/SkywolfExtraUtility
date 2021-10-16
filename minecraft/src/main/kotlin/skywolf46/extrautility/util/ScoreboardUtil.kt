@@ -86,6 +86,7 @@ object ScoreboardUtil {
             }
             lastUpdate.clear()
             for (count in texts.indices) {
+                // TODO Remove try-catch after stabilized
                 try {
                     val next = texts[count]
                     lastUpdate.add(next)

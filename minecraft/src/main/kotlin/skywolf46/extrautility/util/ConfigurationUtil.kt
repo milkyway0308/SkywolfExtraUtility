@@ -2,16 +2,14 @@ package skywolf46.extrautility.util
 
 import org.bukkit.configuration.ConfigurationSection
 
-fun ConfigurationSection.getMap(key: String): Map<String, Any> {
+fun ConfigurationSection.getMap(key: String): MutableMap<String, Any> {
     return (getConfigurationSection(key)?.let {
-        val map = mutableMapOf<String, Any>()
-        it.getKeys(false).forEach { key ->
-            map[key] = it[key]
+        mutableMapOf<String, Any>().apply {
+            it.getKeys(false).forEach { key ->
+                this[key] = it[key]
+            }
         }
-        return map
-    } ?: run {
-        return mapOf()
-    })
+    } ?: mutableMapOf())
 }
 
 
