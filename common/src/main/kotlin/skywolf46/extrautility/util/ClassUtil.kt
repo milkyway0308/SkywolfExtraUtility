@@ -124,6 +124,8 @@ object ClassUtil {
 
         fun toMethodFilter() = MethodUtil.filter(list)
 
+        fun toFieldFilter() = FieldUtil.filter(list)
+
     }
 
     enum class ReflectionClassFilter(
