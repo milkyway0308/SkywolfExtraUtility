@@ -3,6 +3,12 @@ package skywolf46.extrautility.util
 import java.lang.reflect.Field
 import java.lang.reflect.Method
 
+fun findClass(clsName: String): Class<*>? = try {
+    Class.forName(clsName)
+} catch (e: Throwable) {
+    null
+}
+
 fun <T : Any?> Any.extractField(fieldName: String): T? {
     try {
         javaClass.getDeclaredField(fieldName).apply {

@@ -7,6 +7,7 @@ import org.bukkit.configuration.serialization.ConfigurationSerialization
 import org.bukkit.event.Event
 import org.bukkit.plugin.java.JavaPlugin
 import skywolf46.extrautility.abstraction.IThreadSubmitter
+import skywolf46.extrautility.annotations.AllowScanning
 import skywolf46.extrautility.annotations.MinecraftSerialize
 import skywolf46.extrautility.impl.BukkitEventProvider
 import skywolf46.extrautility.listener.DamageListener
@@ -15,9 +16,10 @@ import skywolf46.extrautility.util.*
 import java.io.InputStreamReader
 import java.util.jar.JarFile
 
+@AllowScanning
 class SkywolfExtraUtility : JavaPlugin() {
-    companion object {
 
+    companion object {
         internal lateinit var inst: SkywolfExtraUtility
             private set
     }
