@@ -13,7 +13,7 @@ fun <T : Any?> Any.extractField(fieldName: String): T? {
     return extractField(javaClass, fieldName)
 }
 
-fun <T : Any?> Any.extractField(cls: Class<Any>, fieldName: String): T? {
+fun <T : Any?> Any.extractField(cls: Class<*>, fieldName: String): T? {
     try {
         cls.getDeclaredField(fieldName).apply {
             val orig = isAccessible
@@ -41,7 +41,7 @@ fun Any.setField(fieldName: String, data: Any?) {
     }
 }
 
-fun Any.invokeMethod(cls: Class<Any>, methodName: String, vararg args: Any): Any? {
+fun Any.invokeMethod(cls: Class<*>, methodName: String, vararg args: Any): Any? {
     return try {
         cls.getMethod(methodName, *args.map { x -> x.javaClass }.toTypedArray()).invoke(this, *args)
     } catch (e: Exception) {
