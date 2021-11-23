@@ -15,6 +15,7 @@ publishing {
             }
         }
     }
+
     publications {
         create("jar", MavenPublication) {
             groupId 'skywolf46'
@@ -22,6 +23,15 @@ publishing {
             version rootProject.properties['version'] as String
             project.shadow.component(it)
         }
+    }
+    shadowJar {
+        archiveBaseName.set("SkywolfExtraUtility-${project.name.capitalize()}")
+        destinationDirectory = file("$rootDir/addonJars")
+        classifier("")
+    }
+
+    jar {
+        finalizedBy("shadowJar")
     }
 }
 

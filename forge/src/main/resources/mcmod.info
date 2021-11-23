@@ -1,0 +1,17 @@
+[
+  {
+    "modid": "exutil",
+    "name": "SkywolfExtraUtility",
+    "description": "Extra utilities.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": [
+      "skywolf46"
+    ],
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

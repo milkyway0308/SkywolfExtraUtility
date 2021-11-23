@@ -51,13 +51,18 @@ object MethodUtil {
                 }
             } catch (e: UnsupportedOperationException) {
                 // Ignored.
+//                e.printStackTrace()
             } catch (e: Exception) {
 //                System.err.println("Cannot parse ${cls.javaClass.name} with kotlin reflection : ${e.javaClass.name} (${e.message})")
+//                e.printStackTrace()
+
             }
+
             for (x in cls.declaredMethods) {
                 methodList += MethodWrapper(x, instance)
             }
         } catch (e: Throwable) {
+//            e.printStackTrace()
 //            ExtraUtilityCore.logger.severe("Cannot parse ${cls.javaClass.name} : ${e.javaClass.name} (${e.message})")
         }
     }

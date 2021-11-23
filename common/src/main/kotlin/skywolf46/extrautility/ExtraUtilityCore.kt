@@ -113,7 +113,7 @@ object ExtraUtilityCore {
     }
 
 
-    private fun scanLegacyEventHandlers() {
+    fun scanLegacyEventHandlers() {
         MethodUtil.getCache()
             .filter(false, ExtraEventHandler::class.java, ExtraJavaEventHandler::class.java)
             .filter({
@@ -126,6 +126,9 @@ object ExtraUtilityCore {
     private fun scanEventHandlers() {
         MethodUtil.getCache()
             .filter(GlobalEventHandler::class.java)
+            .apply {
+                println(this.methods.map { x -> x.method })
+            }
             .filter(MethodUtil.ReflectionMethodFilter.INSTANCE_NOT_REQUIRED)
             .unlockAll()
             .methods.forEach {

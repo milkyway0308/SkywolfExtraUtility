@@ -18,4 +18,5 @@ include 'all'
 include 'bungee'
 include 'bungeeRuntime'
 include 'fabric'
+include 'forge'
 

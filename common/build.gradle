@@ -7,5 +7,6 @@ dependencies {
     compileOnly group: 'org.jetbrains.kotlin', name: 'kotlin-reflect', version: '1.5.31'
 
     implementation group: "io.github.classgraph", name: 'classgraph', version: '4.8.126'
-    implementation group: "nl.komponents.kovenant", name: 'kovenant', version: '3.3.0'
+    implementation group: "io.github.classgraph", name: 'classgraph', version: '4.8.126'
+    implementate group: "nl.komponents.kovenant", name: 'kovenant', version: '3.3.0'
 }

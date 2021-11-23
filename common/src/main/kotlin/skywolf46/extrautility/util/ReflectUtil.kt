@@ -37,6 +37,15 @@ fun Any.setField(fieldName: String, data: Any?) {
     }
 }
 
+fun Any.invokeMethod(methodName: String, vararg args: Any): Any? {
+    return try {
+        javaClass.getMethod(methodName, *args.map { x -> x.javaClass }.toTypedArray()).invoke(this, *args)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
+
 // TODO Add version-specific unlock reflection
 fun Method.unlock() {
     isAccessible = true
