@@ -10,8 +10,12 @@ fun findClass(clsName: String): Class<*>? = try {
 }
 
 fun <T : Any?> Any.extractField(fieldName: String): T? {
+    return extractField(javaClass, fieldName)
+}
+
+fun <T : Any?> Any.extractField(cls: Class<Any>, fieldName: String): T? {
     try {
-        javaClass.getDeclaredField(fieldName).apply {
+        cls.getDeclaredField(fieldName).apply {
             val orig = isAccessible
             isAccessible = true
             return get(this@extractField)?.apply {
@@ -37,13 +41,17 @@ fun Any.setField(fieldName: String, data: Any?) {
     }
 }
 
-fun Any.invokeMethod(methodName: String, vararg args: Any): Any? {
+fun Any.invokeMethod(cls: Class<Any>, methodName: String, vararg args: Any): Any? {
     return try {
-        javaClass.getMethod(methodName, *args.map { x -> x.javaClass }.toTypedArray()).invoke(this, *args)
+        cls.getMethod(methodName, *args.map { x -> x.javaClass }.toTypedArray()).invoke(this, *args)
     } catch (e: Exception) {
         e.printStackTrace()
         null
     }
+}
+
+fun Any.invokeMethod(methodName: String, vararg args: Any): Any? {
+    return invokeMethod(javaClass, methodName, *args)
 }
 
 // TODO Add version-specific unlock reflection
