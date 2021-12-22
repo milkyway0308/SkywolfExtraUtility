@@ -3,6 +3,7 @@ package skywolf46.extrautility.util
 import io.github.classgraph.ClassGraph
 import io.github.classgraph.ScanResult
 import skywolf46.extrautility.ExtraUtilityCore
+import skywolf46.extrautility.util.ClassUtil.iterateParentClasses
 import java.lang.reflect.Modifier
 import kotlin.reflect.KVisibility
 
@@ -36,6 +37,26 @@ object ClassUtil {
             clsOrig = clsOrig.superclass
         } while (clsOrig != Any::class.java)
         iterator(Any::class.java)
+    }
+
+    @JvmStatic
+    fun Class<*>.iterateParentClassesUntil(iterator: Class<*>.() -> Any?): Any? {
+        var clsOrig: Class<*>? = this
+        do {
+            if (clsOrig == null)
+                return null
+            iterator(clsOrig)?.apply {
+                return this
+            }
+            for (x in clsOrig.interfaces) {
+                x.iterateParentClassesUntil(iterator)?.apply {
+                    // Break recursive iteration
+                    return this
+                }
+            }
+            clsOrig = clsOrig.superclass
+        } while (clsOrig != Any::class.java)
+        return iterator(Any::class.java)
     }
 
     @Deprecated(
@@ -249,3 +270,11 @@ object ClassUtil {
     }
 
 }
+
+//fun <X : Annotation> Class<*>.getAnnotationRecursively(annotation: Class<out X>): {
+//    iterateParentClasses {
+//        getAnnotation(annotation)?.apply {
+//            return this
+//        }
+//    }
+//}

@@ -55,7 +55,6 @@ object MethodUtil {
             } catch (e: Exception) {
 //                System.err.println("Cannot parse ${cls.javaClass.name} with kotlin reflection : ${e.javaClass.name} (${e.message})")
 //                e.printStackTrace()
-
             }
 
             for (x in cls.declaredMethods) {

@@ -22,7 +22,6 @@ object ForgeClassLoader {
                     add(x.mod.javaClass.classLoader as ClassLoader)
                 }
             }
-            println(this)
         }.toTypedArray())
     }
 
