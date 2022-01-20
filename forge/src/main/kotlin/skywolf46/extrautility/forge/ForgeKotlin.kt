@@ -11,7 +11,7 @@ object ForgeKotlin {
     @JvmStatic
     fun init(event: FMLPostInitializationEvent) {
         println("ExtraUtility-Forge | Init..")
-        ClassUtil.updator = {
+        ClassUtil.addUpdater {
             ForgeClassLoader.loadAllClass()
         }
 

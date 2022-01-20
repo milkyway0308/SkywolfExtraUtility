@@ -39,7 +39,7 @@ class SkywolfExtraUtility : JavaPlugin() {
 
         }
         log("§e[ExtraUtility] §7Updating class cache")
-        ClassUtil.updator = {
+        ClassUtil.addUpdater {
             MinecraftLoader.loadAllClass()
         }
         EventUtil.registerProducer(Event::class.java, BukkitEventProvider())

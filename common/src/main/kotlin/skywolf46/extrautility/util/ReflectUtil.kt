@@ -9,6 +9,10 @@ fun findClass(clsName: String): Class<*>? = try {
     null
 }
 
+fun Class<*>.createOrFindInstance(): Any {
+    return kotlin.objectInstance ?: newInstance()
+}
+
 fun <T : Any?> Any.extractField(fieldName: String): T? {
     return extractField(javaClass, fieldName)
 }
@@ -63,4 +67,16 @@ fun Method.unlock() {
 // TODO Add version-specific unlock reflection
 fun Field.unlock() {
     isAccessible = true
+}
+
+// TODO Add version-specific unlock reflection
+fun Field.unlock(unit: (Field) -> Unit) {
+    val state = isAccessible
+    if (!state) {
+        isAccessible = true
+        unit(this)
+        isAccessible = false
+    } else {
+        unit(this)
+    }
 }

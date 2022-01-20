@@ -72,7 +72,7 @@ object ExtraUtilityCore {
             "net.md_5.bungee",
             "com.mojang.brigadier"
 
-            )
+        )
     }
 
     fun getIgnoredList() = ArrayList(ignored)
@@ -111,7 +111,6 @@ object ExtraUtilityCore {
         scanLegacyEventHandlers()
         scanEventHandlers()
     }
-
 
     fun scanLegacyEventHandlers() {
         MethodUtil.getCache()

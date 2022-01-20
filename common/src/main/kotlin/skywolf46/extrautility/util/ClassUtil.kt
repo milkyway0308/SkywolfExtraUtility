@@ -3,7 +3,6 @@ package skywolf46.extrautility.util
 import io.github.classgraph.ClassGraph
 import io.github.classgraph.ScanResult
 import skywolf46.extrautility.ExtraUtilityCore
-import skywolf46.extrautility.util.ClassUtil.iterateParentClasses
 import java.lang.reflect.Modifier
 import kotlin.reflect.KVisibility
 
@@ -11,18 +10,25 @@ object ClassUtil {
 
     private var cache: ClassFilter? = null
 
-    var updator: () -> List<Class<*>> = {
-        scanClass(ExtraUtilityCore.getIgnoredList())
-    }
+    private val updator: MutableList<() -> List<Class<*>>> = mutableListOf(
+        { scanClass(ExtraUtilityCore.getIgnoredList()) }
+    )
 
     fun getCache(): ClassFilter = cache ?: updateAndGetCache()
 
 
     fun updateAndGetCache() = run {
-        cache = ClassFilter(updator())
+        val list = mutableListOf<Class<*>>()
+        updator.forEach {
+            list.addAll(it())
+        }
+        cache = ClassFilter(list)
         return@run cache!!
     }
 
+    fun addUpdater(unit: () -> List<Class<*>>) {
+        updator += unit
+    }
 
     @JvmStatic
     fun Class<*>.iterateParentClasses(iterator: Class<*>.() -> Unit) {
@@ -58,6 +64,7 @@ object ClassUtil {
         } while (clsOrig != Any::class.java)
         return iterator(Any::class.java)
     }
+
 
     @Deprecated(
         "Deprecated from 1.63.0", ReplaceWith(

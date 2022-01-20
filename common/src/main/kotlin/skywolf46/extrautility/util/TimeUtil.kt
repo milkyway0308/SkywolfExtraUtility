@@ -23,6 +23,7 @@ fun Int.toTimeString(): String {
 }
 
 infix fun Int.from(unitData: EnumTimeUnit) = unitData of this.toLong()
+
 fun EnumTimeUnit.TimeUnitData.toTimeString(
     doSort: Boolean = true,
     skipIfZeroPrefix: Boolean = true,
