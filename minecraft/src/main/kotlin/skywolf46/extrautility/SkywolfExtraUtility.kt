@@ -39,9 +39,11 @@ class SkywolfExtraUtility : JavaPlugin() {
 
         }
         log("§e[ExtraUtility] §7Updating class cache")
-        ClassUtil.addUpdater {
+        ClassUtil.registerUpdater {
             MinecraftLoader.loadAllClass()
         }
+        ClassUtil.updateAndGetCache()
+        MethodUtil.updateAndGetCache()
         EventUtil.registerProducer(Event::class.java, BukkitEventProvider())
         try {
             val jar = JarFile(file)

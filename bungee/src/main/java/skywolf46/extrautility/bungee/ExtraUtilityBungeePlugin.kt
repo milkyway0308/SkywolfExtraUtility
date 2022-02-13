@@ -19,7 +19,7 @@ class ExtraUtilityBungeePlugin : Plugin() {
     override fun onEnable() {
         inst = this
         EventUtil.registerProducer(Event::class.java, BungeeEventProducer)
-        ClassUtil.addUpdater {
+        ClassUtil.registerUpdater {
             BungeecordClassLoader.loadAllClass()
         }
         ExtraUtilityCore.processAnnotations()

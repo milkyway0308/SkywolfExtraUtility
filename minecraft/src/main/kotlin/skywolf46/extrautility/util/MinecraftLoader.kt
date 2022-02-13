@@ -13,6 +13,7 @@ object MinecraftLoader {
         return ClassUtil.scanClassExactly(ExtraUtilityCore.getIgnoredList(),true, *mutableListOf<ClassLoader>().apply {
             for (x in Bukkit.getPluginManager().plugins) {
                 if (isRestricted) {
+                    println("ExtraUtility-Minecraft | Added plugin ${x.name}")
                     if (x.javaClass.getAnnotation(AllowScanning::class.java) != null) {
                         add((x as JavaPlugin).javaClass.classLoader as ClassLoader)
                     }

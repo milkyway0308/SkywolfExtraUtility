@@ -26,7 +26,7 @@ object ClassUtil {
         return@run cache!!
     }
 
-    fun addUpdater(unit: () -> List<Class<*>>) {
+    fun registerUpdater(unit: () -> List<Class<*>>) {
         updator += unit
     }
 
@@ -145,6 +145,18 @@ object ClassUtil {
             })
         }
 
+        fun <X : Any> filterImplementation(inherit: Class<X>): ClassFilter {
+            return ClassFilter(list.filter { x -> inherit.isAssignableFrom(x) })
+        }
+
+        fun <X : Any> filterImplementation(vararg inherit: Class<X>): ClassFilter {
+            return ClassFilter(list.filter { x -> inherit.all { cls -> cls.isAssignableFrom(x) } })
+        }
+
+        fun <X : Any> anyImplementation(vararg inherit: Class<X>): ClassFilter {
+            return ClassFilter(list.filter { x -> inherit.any { cls -> cls.isAssignableFrom(x) } })
+        }
+
 
         fun <X : Annotation> filter(annotation: Class<X>, unit: (X) -> Boolean): ClassFilter {
             return ClassFilter(list.filter { x -> x.getAnnotation(annotation)?.run(unit) == true })
@@ -241,7 +253,6 @@ object ClassUtil {
          */
         ACCESSOR_INTERNAL({ ACCESSOR_NON_INTERNAL },
             {
-
                 (kotlin.visibility?.equals(KVisibility.INTERNAL) == true)
             }),
 

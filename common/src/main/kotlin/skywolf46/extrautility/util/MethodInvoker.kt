@@ -26,10 +26,15 @@ class MethodInvoker(val method: Method, private val instance: Any?) {
     operator fun invoke(storage: ArgumentStorage): Any? {
         val arrNullable = Array<Any?>(indexed.size) { null }
         for (x in 0 until indexed.size) {
-            arrNullable[x] = variableIndexed[x]?.run { storage[this.first] } ?: storage[indexed[x]!!]?.get(0)
+            arrNullable[x] = variableIndexed[x]?.run { storage[this.first] } ?: storage[indexed[x]!!].run {
+                if (size == 0)
+                    null
+                else
+                    this[0]
+            }
         }
         return method.invoke(instance, *arrNullable)
     }
 
-    fun call(storage: ArgumentStorage) : Any? = invoke(storage)
+    fun call(storage: ArgumentStorage): Any? = invoke(storage)
 }
