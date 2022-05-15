@@ -1,9 +1,5 @@
 pluginManagement {
     repositories {
-        maven {
-            url = uri("http://dja.kr:55201/releases")
-            allowInsecureProtocol(true)
-        }
         gradlePluginPortal()
     }
 }

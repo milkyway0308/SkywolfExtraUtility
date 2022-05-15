@@ -8,8 +8,6 @@ allprojects {
     configurations {
         implementate
     }
-
-
 }
 subprojects {
     apply plugin: 'java'

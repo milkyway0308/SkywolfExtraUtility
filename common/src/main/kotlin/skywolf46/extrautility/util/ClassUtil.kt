@@ -280,7 +280,27 @@ object ClassUtil {
             { INSTANCE_REQUIRED }, {
                 !INSTANCE_REQUIRED.filter(this)
             }
-        );
+        ),
+
+        /*
+          Accept if field is abstract or interface.
+       */
+        ABSTRACTED(
+            { NOT_ABSTRACTED }, {
+                Modifier.isInterface(modifiers) || Modifier.isAbstract(modifiers)
+            }
+        ),
+
+        /*
+            Accept if field is not abstract and interface.
+         */
+        NOT_ABSTRACTED(
+            { ABSTRACTED }, {
+                !ABSTRACTED.filter(this)
+            }
+        )
+
+        ;
 
         fun negative() = this.negative.invoke()
 

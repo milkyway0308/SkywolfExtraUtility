@@ -45,7 +45,7 @@ class DamageListener : Listener {
         if (entity is Player && (entity as Player).health <= finalDamage) {
             PlayerPreDeathEvent(entity as Player).callEvent().let {
                 if (it.isCancelled)
-                    it.isCancelled = isCancelled
+                    isCancelled = true
             }
         }
     }
@@ -57,7 +57,7 @@ class DamageListener : Listener {
         if (entity is Player && (entity as Player).health <= finalDamage) {
             PlayerPreDeathEvent(entity as Player).callEvent().let {
                 if (it.isCancelled)
-                    it.isCancelled = isCancelled
+                    isCancelled = true
             }
         }
     }
